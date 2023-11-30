@@ -1,9 +1,10 @@
 
 export default {
-  apiKey: "AIzaSyAMEQsetAlKZNV3RZ5XqavIUkT2pcLDVOc",
-  authDomain: "songscout-1ce29.firebaseapp.com",
-  projectId: "songscout-1ce29",
-  storageBucket: "songscout-1ce29.appspot.com",
-  messagingSenderId: "211751890620",
-  appId: "1:211751890620:web:638b8931207cce6422aab9"
+  apiKey: "AIzaSyBB7eA6eZKFT-0pIlcx4iwLyOAeBxWv1fk",
+  authDomain: "songscout-ba310.firebaseapp.com",
+  projectId: "songscout-ba310",
+  storageBucket: "songscout-ba310.appspot.com",
+  messagingSenderId: "4105469336",
+  appId: "1:4105469336:web:20977adc006b5354babfed",
+  measurementId: "G-3CY8RKXPVH"
 };
