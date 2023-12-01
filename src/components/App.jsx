@@ -1,0 +1,43 @@
+import React from 'react';
+import '../App.css';
+import {Route, Routes} from 'react-router-dom';
+import Account from './Account';
+import Home from './Home';
+import Landing from './Landing';
+import Navigation from './Navigation';
+import SignIn from './SignIn';
+import SignUp from './SignUp';
+import Trending from './Trending';
+
+import {AuthProvider} from '../context/AuthContext';
+import PrivateRoute from './PrivateRoute';
+import RecommendationOptions from './RecommendationOptions';
+import RecommendationResults from './RecommendationResults';
+function App() {
+  return (
+    <AuthProvider>
+      <div className='App'>
+        <header className='App-header card'>
+          <Navigation />
+        </header>
+        <Routes>
+          <Route path='/' element={<Landing />} />
+          <Route path='/test' element={<Trending />} />
+          <Route path='/home' element={<PrivateRoute />}>
+            <Route path='/home' element={<Home />} />
+          </Route>
+          <Route path='/account' element={<PrivateRoute />}>
+            <Route path='/account' element={<Account />} />
+          </Route>
+          <Route path='/signin' element={<SignIn />} />
+          <Route path='/signup' element={<SignUp />} />
+          
+          <Route path='/ChooseRecommend' element={<RecommendationOptions />} />
+          <Route path='/RecommedResults' element={<RecommendationResults />}/>
+          </Routes>
+      </div>
+    </AuthProvider>
+  );
+}
+
+export default App;
