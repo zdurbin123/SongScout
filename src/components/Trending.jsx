@@ -14,7 +14,7 @@ const Trending = () => {
     }
 
     to();
-  }, []);
+  }, );
 
   return (
     <div>
