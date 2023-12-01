@@ -8,7 +8,7 @@ import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
 import Trending from './Trending';
-
+//hey its jey
 import {AuthProvider} from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import RecommendationOptions from './RecommendationOptions';
