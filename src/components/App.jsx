@@ -7,6 +7,8 @@ import Landing from './Landing';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
+import Trending from './trending';
+
 import {AuthProvider} from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
 function App() {
@@ -18,6 +20,7 @@ function App() {
         </header>
         <Routes>
           <Route path='/' element={<Landing />} />
+          <Route path='/test' element={<Trending />} />
           <Route path='/home' element={<PrivateRoute />}>
             <Route path='/home' element={<Home />} />
           </Route>
