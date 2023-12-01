@@ -51,7 +51,8 @@ import {
         email: email,
         uid: uid,
         likedsongs: [],
-        dislikedsongs: []
+        dislikedsongs: [],
+        photoURL:""
       });
       return getUserProfileById(uid);
     } catch (error) {
@@ -60,7 +61,28 @@ import {
     }
   }
 
+  async function updateUserProfile(username, email,uid,likedsongs,dislikedsongs,photourl){
+    const userDocRef = doc(db, 'users', uid);
+
+    try {
+      const userProfile = {
+        username: username,
+        email: email,
+        likedsongs: likedsongs,
+        dislikedsongs: dislikedsongs,
+        photoURL: photourl,
+      };
+      await setDoc(userDocRef, userProfile, { merge: true });
+
+      console.log('User profile updated successfully!');
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
+  }
+
   export {
     getUserProfileById,
-    createUserProfile
+    createUserProfile,
+    updateUserProfile
   }
