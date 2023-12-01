@@ -45,7 +45,7 @@ function UserProfile() {
       {userProfile ? (
         <div>
           <p>Username: {userProfile.username}</p>
-          <p>Liked songs: {userProfile.likedsongs.length > 0 ? userProfile.likedsongs.map(song => <span key={song}>{song}</span>) : 'Null'}</p>
+          <p>Liked songs: {userProfile.likedsongs.length > 0 ? userProfile.likedsongs.map(song => <a key={song} href={`${song}`}>{song}</a>) : 'Null'}</p>
           <p>Disliked songs: {userProfile.dislikedsongs.length > 0 ? userProfile.dislikedsongs.map(song => <span key={song}>{song}</span>) : 'Null'}</p>
 
           <div>
