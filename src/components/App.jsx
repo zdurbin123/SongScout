@@ -11,6 +11,8 @@ import Trending from './Trending';
 
 import {AuthProvider} from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
+import RecommendationOptions from './RecommendationOptions';
+import RecommendationResults from './RecommendationResults';
 function App() {
   return (
     <AuthProvider>
@@ -29,7 +31,10 @@ function App() {
           </Route>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
-        </Routes>
+          
+          <Route path='/ChooseRecommend' element={<RecommendationOptions />} />
+          <Route path='/RecommedResults' element={<RecommendationResults />}/>
+          </Routes>
       </div>
     </AuthProvider>
   );
