@@ -10,8 +10,8 @@ function UserProfile() {
   useEffect(() => {
     const fetchUserProfile = async () => {
       try {
-        const userProfileData = await getUserProfileById('1');
-        setUserProfile(userProfileData[0]);
+        const userProfileData = await getUserProfileById(currentUser.uid);
+        setUserProfile(userProfileData);
       } catch (error) {
         console.error('Error fetching user profile:', error);
       }
@@ -24,8 +24,9 @@ function UserProfile() {
     <div>
       {userProfile ? (
         <div>
-          <p>User ID: {userProfile.Userid}</p>
-          <p>Other profile data: {userProfile.Username}</p>
+          <p>Username: {userProfile.username}</p>
+          <p>Liked songs: {userProfile.likedsongs.length > 0 ? userProfile.likedsongs.map(song => <span key={song}>{song}</span>) : 'Null'}</p>
+          <p>Disliked songs: {userProfile.dislikedsongs.length > 0 ? userProfile.dislikedsongs.map(song => <span key={song}>{song}</span>) : 'Null'}</p>
         </div>
       ) : (
         <p>Loading...</p>
