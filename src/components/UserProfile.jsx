@@ -1,11 +1,12 @@
 import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
-import { getUserProfileById } from '../../data/userprofile';
+import { getUserProfileById, updateUserProfile } from '../../data/userprofile';
 import '../App.css';
 
 function UserProfile() {
   const { currentUser } = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState(null);
+  const [newUsername, setNewUsername] = useState('');
 
   useEffect(() => {
     const fetchUserProfile = async () => {
@@ -18,7 +19,26 @@ function UserProfile() {
     };
 
     fetchUserProfile();
-  }, []);
+  }, [currentUser.uid]);
+
+  const handleUpdateProfile = async () => {
+    try {
+      await updateUserProfile(
+        newUsername || userProfile.username, 
+        currentUser.email,
+        currentUser.uid,
+        userProfile.likedsongs, 
+        userProfile.dislikedsongs, 
+        'fuck'
+      );
+
+      const updatedProfile = await getUserProfileById(currentUser.uid);
+      setUserProfile(updatedProfile);
+      console.log('User profile updated successfully!');
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+    }
+  };
 
   return (
     <div>
@@ -27,6 +47,14 @@ function UserProfile() {
           <p>Username: {userProfile.username}</p>
           <p>Liked songs: {userProfile.likedsongs.length > 0 ? userProfile.likedsongs.map(song => <span key={song}>{song}</span>) : 'Null'}</p>
           <p>Disliked songs: {userProfile.dislikedsongs.length > 0 ? userProfile.dislikedsongs.map(song => <span key={song}>{song}</span>) : 'Null'}</p>
+
+          <div>
+            <label>New Username:</label>
+            <input type="text" value={newUsername} onChange={(e) => setNewUsername(e.target.value)} />
+            <br />
+
+            <button onClick={handleUpdateProfile}>Update Profile</button>
+          </div>
         </div>
       ) : (
         <p>Loading...</p>
