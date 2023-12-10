@@ -4,6 +4,7 @@ import {Route, Routes} from 'react-router-dom';
 import Account from './Account';
 import Home from './Home';
 import Landing from './Landing';
+import Display from'./Display';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
 import SignUp from './SignUp';
@@ -22,13 +23,14 @@ function App() {
         </header>
         <Routes>
           <Route path='/' element={<Landing />} />
-          <Route path='/test' element={<Trending />} />
+          <Route path='/display' element={<Display />} />
+          <Route path='/trending' element={<Trending />} />
           <Route path='/home' element={<PrivateRoute />}>
             <Route path='/home' element={<Home />} />
           </Route>
           <Route path='/account' element={<PrivateRoute />}>
             <Route path='/account' element={<Account />} />
-          </Route>
+          //</Route>
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
           
