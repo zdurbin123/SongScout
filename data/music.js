@@ -17,7 +17,7 @@ import {
 
 //uid is user_id
 
-async function likeSong(uid, { song_name, song_id, author_id, author_name, preview_url }) {
+async function likeSong(uid, { song_name, song_id, artist_id, artist_name, preview_url }) {
     const userDocRef = doc(db, 'users', uid);
   
     try {
@@ -28,8 +28,8 @@ async function likeSong(uid, { song_name, song_id, author_id, author_name, previ
         const likedSong = {
           song_name,
           song_id,
-          author_id,
-          author_name,
+          artist_id,
+          artist_name,
           preview_url,
         };
   
