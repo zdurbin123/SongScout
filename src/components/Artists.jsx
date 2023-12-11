@@ -7,7 +7,7 @@ import {Button,Card,Row,Container,InputGroup,FormControl} from 'react-bootstrap'
 function Display() {
     const[searchTerm,setsearchTerm]=useState('');
     const [token, setToken] = useState('');
-    const [tracks, setTracks] = useState([]);
+    const [artists, setArtists] = useState([]);
 
     useEffect(() => {
     async function to() {
@@ -18,6 +18,7 @@ function Display() {
 
     to();
   }, []);
+  
 
   async function querySearch(){
     console.log("hi")
@@ -28,9 +29,9 @@ function Display() {
         }
     }
     try {
-      const { data } = await axios.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchTerm)}&type=track`, parameters);
-      setTracks(data.tracks.items)
-      console.log(data.tracks.items);
+      const { data } = await axios.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchTerm)}&type=artist`, parameters);
+      setArtists(data.artists.items)
+      console.log(data.artists.items);
   } catch (error) {
       console.error('Error from Spotify:', error);
   }
@@ -40,7 +41,6 @@ function Display() {
       querySearch();
     }
   };
-
     return (
     <div>
         <Container>
@@ -49,7 +49,7 @@ function Display() {
         <FormControl
           aria-label="Large"
           aria-describedby="inputGroup-sizing-sm"
-          placeholder="Search Tracks"
+          placeholder="Search Artists"
           type="input"
           onChange={event=>setsearchTerm(event.target.value)}
           onKeyDown={handleKeyPress}
@@ -58,19 +58,26 @@ function Display() {
         <Button onClick={()=>{querySearch()}}variant="primary">Search</Button>
          </InputGroup>
          </Container>
+         
+
+
          <Container>
          <Row  lg={3} className="g-4">
-         {tracks.map((track, index) => (
+         {artists.map((artist, index) => (
                         <Card key={index} style={{ width: '18rem' }}>
-                            <Card.Img variant="top" src={track.album.images[0]?.url} />
-                            <Card.Body>
-                                <Card.Title>{track.name}</Card.Title>
-                                <Card.Text>
-                                    Artist: {track.artists.map(artist => artist.name).join(', ')}
-                                </Card.Text>
-                                <Button variant="primary" href={track.external_urls.spotify} target="_blank">Listen on Spotify</Button>
-                            </Card.Body>
-                        </Card>
+                        <Card.Img variant="top" src={artist.images[0]?.url} alt={`${artist.name}`} />
+                        <Card.Body>
+                            <Card.Title>{artist.name}</Card.Title>
+                            <Card.Text>
+                                <strong>Genres:</strong> {artist.genres.join(', ')}
+                                <br/>
+                                <strong>Followers:</strong> {artist.followers.total.toLocaleString()}
+                                <br/>
+                                <strong>Popularity:</strong> {artist.popularity}
+                            </Card.Text>
+                            <Button variant="primary" href={artist.external_urls.spotify} target="_blank">View on Spotify</Button>
+                        </Card.Body>
+                    </Card>
                     ))}
 
         </Row>

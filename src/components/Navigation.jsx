@@ -20,10 +20,13 @@ const NavigationAuth = () => {
           <NavLink to='/home'>Home</NavLink>
         </li>
         <li>
-          <NavLink to='/trending'>Trending</NavLink>
+          <NavLink to='/Trending'>Trending</NavLink>
         </li>
         <li>
-          <NavLink to='/display'>Display</NavLink>
+          <NavLink to='/Display'>Tracks</NavLink>
+        </li>
+        <li>
+          <NavLink to='/Artists'>Artists</NavLink>
         </li>
         <li>
           <NavLink to='/account'>Account</NavLink>
