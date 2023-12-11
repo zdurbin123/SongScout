@@ -51,7 +51,6 @@ import {
         email: email,
         uid: uid,
         likedsongs: [],
-        dislikedsongs: [],
         photoURL:""
       });
       return getUserProfileById(uid);
@@ -61,7 +60,7 @@ import {
     }
   }
 
-  async function updateUserProfile(username, email,uid,likedsongs,dislikedsongs,photourl){
+  async function updateUserProfile(username, email,uid,likedsongs,photourl){
     const userDocRef = doc(db, 'users', uid);
 
     try {
@@ -69,7 +68,6 @@ import {
         username: username,
         email: email,
         likedsongs: likedsongs,
-        dislikedsongs: dislikedsongs,
         photoURL: photourl,
       };
       await setDoc(userDocRef, userProfile, { merge: true });
