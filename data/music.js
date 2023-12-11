@@ -16,8 +16,9 @@ import {
   import FirebaseConfig from '../src/firebase/FirebaseConfig'
 
 //uid is user_id
-
-async function likeSong(uid, { song_name, song_id, artist_id, artist_name, preview_url }) {
+const firebaseApp = initializeApp(FirebaseConfig);
+const db = getFirestore(firebaseApp);
+async function likeSong(uid, { song_name, song_id, artists, preview_url }) {
     const userDocRef = doc(db, 'users', uid);
   
     try {
@@ -28,8 +29,7 @@ async function likeSong(uid, { song_name, song_id, artist_id, artist_name, previ
         const likedSong = {
           song_name,
           song_id,
-          artist_id,
-          artist_name,
+          artists,
           preview_url,
         };
   
