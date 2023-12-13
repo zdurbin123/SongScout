@@ -106,3 +106,21 @@ input {
   height: auto;
   padding: 1em;
 }
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  background-color: black; /* or any color you prefer */
+}
+
+.carousel-control-prev,
+.carousel-control-next {
+  filter: invert(100%); /* this will make the default white arrows become black */
+}
+.carousel-indicators [data-bs-target] {
+  background-color: black; /* or any color you prefer */
+}
+.carousel-item {
+  backface-visibility: hidden;
+  transform: translate3d(0, 0, 0);
+  transition: transform 0.6s ease-in-out;
+}
+
