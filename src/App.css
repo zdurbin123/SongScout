@@ -108,19 +108,53 @@ input {
 }
 .carousel-control-prev-icon,
 .carousel-control-next-icon {
-  background-color: black; /* or any color you prefer */
+  background-color: black; 
 }
 
 .carousel-control-prev,
 .carousel-control-next {
-  filter: invert(100%); /* this will make the default white arrows become black */
+  filter: invert(100%); 
 }
-.carousel-indicators [data-bs-target] {
-  background-color: black; /* or any color you prefer */
-}
-.carousel-item {
-  backface-visibility: hidden;
-  transform: translate3d(0, 0, 0);
-  transition: transform 0.6s ease-in-out;
+.carousel-container {
+  position: relative;
+  padding-bottom: 20px; /* Adjust as necessary to make room for indicators */
 }
 
+.carousel {
+  position: relative;
+}
+
+.carousel-indicators {
+  position: absolute;
+  bottom: -30px; /* Adjust based on your padding-bottom value */
+  left: 50%;
+  transform: translateX(-50%);
+  width: auto;
+  margin-left: 0;
+}
+
+.carousel-indicators li {
+  background-color: #999; /* Color for inactive indicators */
+  width: 10px; /* Width of the inactive indicators */
+  height: 3px; /* Height of the inactive indicators */
+  border-radius: 0;
+  margin-right: 5px;
+  margin-left: 5px;
+}
+
+.carousel-indicators .active {
+  background-color: #000; /* Color for the active indicator */
+  width: 30px; /* Width of the active indicator */
+  height: 3px; /* Height of the active indicator */
+}
+
+.card-consistent-height {
+  min-height: 400px; /* This height should be enough to fit the content of the largest card */
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.card-body-overflow {
+  overflow-y: auto; /* Adds scrollbar if content overflows */
+}

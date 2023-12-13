@@ -23,6 +23,7 @@ app.get('/', async (req, res) => {
   };
 
   try {
+    console.log("hi")
     const response = await axios(authOptions);
     console.log(response.data)
     res.json(response.data);
