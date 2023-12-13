@@ -11,6 +11,7 @@ import {
     updateDoc,
     getDoc,
   } from "firebase/firestore/lite";
+  import { getAuth, updateProfile } from 'firebase/auth';
   import { initializeApp } from "firebase/app";
   import FirebaseConfig from '../src/firebase/FirebaseConfig'
   
@@ -62,6 +63,7 @@ import {
 
   async function updateUserProfile(username, email,uid,likedsongs,photourl){
     const userDocRef = doc(db, 'users', uid);
+    const auth = getAuth();
 
     try {
       const userProfile = {
@@ -71,6 +73,10 @@ import {
         photoURL: photourl,
       };
       await setDoc(userDocRef, userProfile, { merge: true });
+      await updateProfile(auth.currentUser, {
+          displayName: username,
+          photoURL: photourl,
+      });
 
       console.log('User profile updated successfully!');
     } catch (error) {
