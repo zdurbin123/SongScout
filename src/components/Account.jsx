@@ -7,8 +7,8 @@ import UserProfile from './UserProfile';
 function Account() {
   return (
     <div className='card'>
-      <UserProfile/>
       <h2>Account Page</h2>
+      <UserProfile/>
       <ChangePassword />
       <SignOutButton />
     </div>
