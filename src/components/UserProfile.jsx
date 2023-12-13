@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { AuthContext } from '../context/AuthContext';
 import { getUserProfileById, updateUserProfile } from '../../data/userprofile';
 import '../App.css';
+import { Link } from 'react-router-dom';
 
 function UserProfile() {
   const { currentUser } = useContext(AuthContext);
@@ -28,7 +29,6 @@ function UserProfile() {
         currentUser.email,
         currentUser.uid,
         userProfile.likedsongs, 
-        userProfile.dislikedsongs, 
         'fuck'
       );
 
@@ -45,8 +45,7 @@ function UserProfile() {
       {userProfile ? (
         <div>
           <p>Username: {userProfile.username}</p>
-          <p>Liked songs: {userProfile.likedsongs.length > 0 ? userProfile.likedsongs.map(song => <a key={song} href={`${song}`}>{song}</a>) : 'Null'}</p>
-          <p>Disliked songs: {userProfile.dislikedsongs.length > 0 ? userProfile.dislikedsongs.map(song => <span key={song}>{song}</span>) : 'Null'}</p>
+          <Link to="/likedsongs">Liked Songs</Link>
 
           <div>
             <label>New Username:</label>
