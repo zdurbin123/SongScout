@@ -8,7 +8,7 @@ function Song() {
     const [song, setSong] = useState({});
     const [artistsDetails, setArtistsDetails] = useState({});
   // waiting for parent class to send the id to this func for me to display the info
-  const id="7p1R9HuieXo4kFwBmEL1Nd"
+  const id="3xXBsjrbG1xQIm1xv1cKOt"
 
     useEffect(() => {
         async function to() {
@@ -66,12 +66,14 @@ function Song() {
   
      
     return (
-        <div>
-          <Carousel fade indicators={true} nextLabel="Next" prevLabel="Previous" nextIcon={<span aria-hidden="true" className="carousel-control-next-icon" />} prevIcon={<span aria-hidden="true" className="carousel-control-prev-icon" />}>
-            {/* Carousel item for song details */}
+        <div className="carousel-container">
+                <Carousel fade indicators={true} nextLabel="Next" prevLabel="Previous"
+                nextIcon={<span aria-hidden="true" className="carousel-control-next-icon" />}
+                prevIcon={<span aria-hidden="true" className="carousel-control-prev-icon" />}
+                >
             <Carousel.Item>
               <Container className="mt-4">
-                <Card className="mb-3">
+                <Card className="mb-3 card-consistent-height">
                   <Row>
                     <Col md={4}>
                       {song.album && song.album.images && song.album.images[0] && (
@@ -84,7 +86,7 @@ function Song() {
                       )}
                     </Col>
                     <Col md={8}>
-                      <Card.Body>
+                      <Card.Body className="card-body-overflow">
                         <Card.Title className="display-4">{song.name}</Card.Title>
                         <Card.Text className="lead">
                           <strong>Artists:</strong> {song.artists && song.artists.map(artist => artist.name).join(', ')}
@@ -116,10 +118,10 @@ function Song() {
             {song.artists && song.artists.map((artist, index) => (
                 
               <Carousel.Item key={index}>
-                <Container className="mt-4">
+                <Container className="mt-4" >
                    
                    {artist.id&& artistfunc(artist.id)&& 
-                  <Card className="mb-3">
+                  <Card className="mb-3 card-consistent-height">
                     <Row>
                       <Col md={4}>
                         {artistsDetails.images && artistsDetails.images[0] && (
@@ -132,7 +134,7 @@ function Song() {
                         )}
                       </Col>
                       <Col md={8}>
-                        <Card.Body>
+                        <Card.Body className="card-body-overflow">
                           <Card.Title>{artist.name}</Card.Title>
                           <Card.Text>
                             <strong>Genres:</strong> {artistsDetails.genres && artistsDetails.genres.join(', ')}
