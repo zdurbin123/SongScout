@@ -11,7 +11,7 @@ function Song() {
     const [isPlaying, setIsPlaying] = useState(false);
   // waiting for parent class to send the id to this func for me to display the info
   //one more light 
-  const id="3xXBsjrbG1xQIm1xv1cKOt"
+  const id="5b2bu6yyATC1zMXDGScJ2d"
 
     useEffect(() => {
         async function to() {
@@ -122,16 +122,18 @@ function Song() {
                             <strong>Available in Markets:</strong> {song.available_markets && song.available_markets.join(', ')}
                           </Card.Text>
                         )}
-                        
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '27px' }}>
+                        {song.preview_url &&
+                        <div>
                         <audio id="song-preview" src={song.preview_url} preload="none"></audio>
                         <Button variant="success" onClick={playPreview}>
                             <i className={`bi ${isPlaying ? 'bi-stop-fill' : 'bi-play-fill'}`}></i>
                             {isPlaying ? ' Stop' : ' Play Preview'}
                         </Button>
-
-                       <br/>
-                       <br/>
+                        </div>}
                         <Button variant="success" href={song.external_urls.spotify} target="_blank">Listen on Spotify</Button>
+                        </div>
+                        <br/>
                         <Card.Text>Switch slides to see Artist/Artists Info!!!</Card.Text>
                       </Card.Body>
                     </Col>
