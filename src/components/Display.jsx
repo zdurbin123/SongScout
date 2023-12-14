@@ -3,6 +3,7 @@ import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button,Card,Row,Container,InputGroup,FormControl} from 'react-bootstrap';
 import {likeSong,dislikeSong, getLikedSongsSortedByLikes} from '../../data/music';
+import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
 
 
@@ -11,9 +12,9 @@ function Display() {
     const [token, setToken] = useState('');
     const [tracks, setTracks] = useState([]);
     const { currentUser } = useContext(AuthContext);
-    const [likedSongs, setLikedSongs] = useState([]);
-    const [dislikedSongs, setDislikedSongs] = useState([]);
-
+    //const [likedSongs, setLikedSongs] = useState([]);
+    //const [dislikedSongs, setDislikedSongs] = useState([]);
+    const { likedSongs, dislikedSongs, handleLike, handleDislike } = useContext(LikesContext);
     useEffect(() => {
     async function to() {
         const {data} = await axios.get('http://localhost:3000')
@@ -46,34 +47,33 @@ function Display() {
     }
   };
 
-  const handleLike = async (track) => {
+  const handleLikeSong = async (track) => {
     try {
-      console.log('track:', track);
-      await likeSong(currentUser.uid, {
-        song_name: track.name,
-        song_id: track.id,
-        artists: track.artists.map(artist => ({ id: artist.id, name: artist.name })),
-        preview_url: track.preview_url,
-        song_url: track.external_urls.spotify,
-        image_url: track.album.images[0]?.url
-      });
-      setLikedSongs([...likedSongs, track.id]); 
-      setDislikedSongs(dislikedSongs.filter(id => id !== track.id));
+        console.log('track:', track);
+        await likeSong(currentUser.uid, {
+          song_name: track.name,
+          song_id: track.id,
+          artists: track.artists.map(artist => ({ id: artist.id, name: artist.name })),
+          preview_url: track.preview_url,
+          song_url: track.external_urls.spotify,
+          image_url: track.album.images[0]?.url
+        });
+        handleLike(track.id); // Update global state
     } catch (error) {
-      console.error('Error liking song:', error);
+        console.error('Error liking song:', error);
     }
-  };
+};
 
-  const handleDislike = async (track) => {
+const handleDislikeSong = async (track) => {
     try {
-      await dislikeSong(currentUser.uid, track.id);
-      console.log('Disliked song successfully!');
-      setDislikedSongs([...dislikedSongs, track.id]); 
-      setLikedSongs(likedSongs.filter(id => id !== track.id));
+        await dislikeSong(currentUser.uid, track.id);
+        console.log('Disliked song successfully!');
+        handleDislike(track.id); // Update global state
     } catch (error) {
-      console.error('Error disliking song:', error);
+        console.error('Error disliking song:', error);
     }
-  };
+};
+
 
     return (
     <div>
@@ -105,21 +105,22 @@ function Display() {
                                 
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                                   {/* <Button variant="success" onClick={() => handleLike(track)}> */}
-                                  <Button
-                                            variant="success"
-                                            onClick={() => handleLike(track)}
-                                            disabled={likedSongs.includes(track.id)} // Disable if already liked
-                                          >
-                                    <i className="bi bi-heart-fill"></i> Like
-                                  </Button>
-                                  {/* <Button variant="danger" onClick={() => handleDislike(track)}> */}
-                                  <Button
-                                        variant="danger"
-                                        onClick={() => handleDislike(track)}
-                                        disabled={dislikedSongs.includes(track.id)} // Disable if already disliked
+                                
+                                      <Button
+                                          variant="success"
+                                          onClick={() => handleLikeSong(track)}
+                                          disabled={likedSongs.includes(track.id)}
                                       >
-                                    <i className="bi bi-x-lg"></i> Dislike
-                                  </Button>
+                                          <i className="bi bi-heart-fill"></i> Like
+                                      </Button>
+                                      <Button
+                                          variant="danger"
+                                          onClick={() => handleDislikeSong(track)}
+                                          disabled={dislikedSongs.includes(track.id)}
+                                      >
+                                          <i className="bi bi-x-lg"></i> Dislike
+                                      </Button>
+
                               </div>
                                 
                                 <Button variant="primary" href={track.external_urls.spotify} target="_blank">Listen on Spotify</Button>
