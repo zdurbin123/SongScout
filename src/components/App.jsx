@@ -6,6 +6,7 @@ import Home from './Home';
 import Landing from './Landing';
 import Display from'./Display';
 import Artists from'./Artists';
+import { LikesProvider } from '../context/LikesContext';
 import Song from'./Song';
 import Navigation from './Navigation';
 import SignIn from './SignIn';
@@ -20,6 +21,7 @@ import LikedSongs from './LikedSongs';
 function App() {
   return (
     <AuthProvider>
+      <LikesProvider>
       <div className='App'>
         <header className='App-header card'>
           <Navigation />
@@ -43,6 +45,7 @@ function App() {
           <Route path='/RecommedResults' element={<RecommendationResults />}/>
           </Routes>
       </div>
+      </LikesProvider>
     </AuthProvider>
   );
 }
