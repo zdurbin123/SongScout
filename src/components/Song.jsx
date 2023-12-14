@@ -6,9 +6,10 @@ import {Button,Card,Row,Col,Container} from 'react-bootstrap';
 function Song() {
     const [token, setToken] = useState('');
     const [song, setSong] = useState({});
-    const [artistsDetails, setArtistsDetails] = useState({});
+    const [artistsDetails, setArtistsDetails] = useState([]);
   // waiting for parent class to send the id to this func for me to display the info
-  const id="3xXBsjrbG1xQIm1xv1cKOt"
+  //one more light 
+  const id="5b2bu6yyATC1zMXDGScJ2d"
 
     useEffect(() => {
         async function to() {
@@ -34,6 +35,9 @@ function Song() {
             try {
               const { data } = await axios.get(`https://api.spotify.com/v1/tracks/${encodeURIComponent(id)}`, parameters);
               setSong(data)
+              if (data.artists && data.artists.length > 0) {
+                artistfunc(data.artists);
+            } 
               console.log(data);
           } catch (error) {
               console.error('Error from Spotify:', error);
@@ -45,35 +49,35 @@ function Song() {
       if (!song || !song.album || !song.album.images) {
         return <div>Loading...</div>; 
     }
-    async function artistfunc(id){
-        const parameters = {
-            headers: {
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${token}`
-            }
-        };
-        try {
-            const { data } = await axios.get(`https://api.spotify.com/v1/artists/${encodeURIComponent(id)}`, parameters);
-            setArtistsDetails(data)
-            
-            
-        } catch (error) {
-            console.error('Error from Spotify when searching artist:', error);
-            return null
-        }
-
-    }
+    async function artistfunc(artists) {
+      const newArt = [];
+  
+      for (const art of artists) {
+          const parameters = {
+              headers: {
+                  'Content-Type': 'application/json',
+                  'Authorization': `Bearer ${token}`
+              }
+          };
+  
+          try {
+              const { data } = await axios.get(`https://api.spotify.com/v1/artists/${encodeURIComponent(art.id)}`, parameters);
+              newArt.push(data);
+          } catch (error) {
+              console.error('Error from Spotify when searching artist:', error);
+          }
+      }
+  
+      setArtistsDetails(newArt);
+  }
   
      
     return (
-        <div className="carousel-container">
-                <Carousel fade indicators={true} nextLabel="Next" prevLabel="Previous"
-                nextIcon={<span aria-hidden="true" className="carousel-control-next-icon" />}
-                prevIcon={<span aria-hidden="true" className="carousel-control-prev-icon" />}
-                >
+        <div>
+            <Carousel data-bs-theme="dark" fade >
             <Carousel.Item>
               <Container className="mt-4">
-                <Card className="mb-3 card-consistent-height">
+                <Card className="mb-3 ">
                   <Row>
                     <Col md={4}>
                       {song.album && song.album.images && song.album.images[0] && (
@@ -86,7 +90,7 @@ function Song() {
                       )}
                     </Col>
                     <Col md={8}>
-                      <Card.Body className="card-body-overflow">
+                      <Card.Body>
                         <Card.Title className="display-4">{song.name}</Card.Title>
                         <Card.Text className="lead">
                           <strong>Artists:</strong> {song.artists && song.artists.map(artist => artist.name).join(', ')}
@@ -107,50 +111,50 @@ function Song() {
                           </Card.Text>
                         )}
                         <Button variant="success" href={song.external_urls.spotify} target="_blank">Listen on Spotify</Button>
+                        <Card.Text>Switch slides to see Artist/Artists Info!!!</Card.Text>
                       </Card.Body>
                     </Col>
                   </Row>
                 </Card>
               </Container>
+
             </Carousel.Item>
             {/* Carousel items for each artist */}
             
-            {song.artists && song.artists.map((artist, index) => (
-                
-              <Carousel.Item key={index}>
-                <Container className="mt-4" >
-                   
-                   {artist.id&& artistfunc(artist.id)&& 
-                  <Card className="mb-3 card-consistent-height">
-                    <Row>
-                      <Col md={4}>
-                        {artistsDetails.images && artistsDetails.images[0] && (
-                          <Card.Img
-                            variant="top"
-                            src={artistsDetails.images[0].url}
-                            alt={artist.name}
-                            style={{ minHeight: '200px', objectFit: 'cover' }}
-                          />
+            {artistsDetails&&artistsDetails.map((artist, index) => (
+    <Carousel.Item key={index}>
+        <Container className="mt-4">
+            <Card className="mb-3 ">
+                <Row>
+                    <Col md={4}>
+                        {artist.images && artist.images[0] && (
+                            <Card.Img
+                                variant="top"
+                                src={artist.images[0].url}
+                                alt={artist.name}
+                                style={{ minHeight: '200px', objectFit: 'cover' }}
+                            />
                         )}
-                      </Col>
-                      <Col md={8}>
-                        <Card.Body className="card-body-overflow">
-                          <Card.Title>{artist.name}</Card.Title>
-                          <Card.Text>
-                            <strong>Genres:</strong> {artistsDetails.genres && artistsDetails.genres.join(', ')}
-                            <br />
-                            <strong>Followers:</strong> {artistsDetails.followers && artistsDetails.followers.total.toLocaleString()}
-                            <br />
-                            <strong>Popularity:</strong> {artistsDetails.popularity}
-                          </Card.Text>
-                          <Button variant="primary" href={artist.external_urls.spotify} target="_blank">View on Spotify</Button>
+                    </Col>
+                    <Col md={8}>
+                        <Card.Body >
+                            <Card.Title>{artist.name}</Card.Title>
+                            <Card.Text>
+                                <strong>Genres:</strong> {artist.genres && artist.genres.join(', ')}
+                                <br />
+                                <strong>Followers:</strong> {artist.followers && artist.followers.total.toLocaleString()}
+                                <br />
+                                <strong>Popularity:</strong> {artist.popularity}
+                            </Card.Text>
+                            <Button variant="primary" href={artist.external_urls.spotify} target="_blank">View on Spotify</Button>
                         </Card.Body>
-                      </Col>
-                    </Row>
-                  </Card>}
-                </Container>
-              </Carousel.Item>
-            ))}
+                    </Col>
+                </Row>
+            </Card>
+        </Container>
+    </Carousel.Item>
+))}
+
           </Carousel>
         </div>
       );
