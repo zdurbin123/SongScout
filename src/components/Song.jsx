@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+
 import Carousel from 'react-bootstrap/Carousel';
 import {Button,Card,Row,Col,Container} from 'react-bootstrap';
 function Song() {
     const [token, setToken] = useState('');
     const [song, setSong] = useState({});
     const [artistsDetails, setArtistsDetails] = useState([]);
+    const [isPlaying, setIsPlaying] = useState(false);
   // waiting for parent class to send the id to this func for me to display the info
   //one more light 
-  const id="5b2bu6yyATC1zMXDGScJ2d"
+  const id="3xXBsjrbG1xQIm1xv1cKOt"
 
     useEffect(() => {
         async function to() {
@@ -70,7 +72,17 @@ function Song() {
   
       setArtistsDetails(newArt);
   }
-  
+  const playPreview = () => {
+    const audio = document.getElementById('song-preview');
+    if (audio) {
+        if (isPlaying) {
+            audio.pause();
+        } else {
+            audio.play();
+        }
+        setIsPlaying(!isPlaying); 
+    }
+}
      
     return (
         <div>
@@ -110,6 +122,15 @@ function Song() {
                             <strong>Available in Markets:</strong> {song.available_markets && song.available_markets.join(', ')}
                           </Card.Text>
                         )}
+                        
+                        <audio id="song-preview" src={song.preview_url} preload="none"></audio>
+                        <Button variant="success" onClick={playPreview}>
+                            <i className={`bi ${isPlaying ? 'bi-stop-fill' : 'bi-play-fill'}`}></i>
+                            {isPlaying ? ' Stop' : ' Play Preview'}
+                        </Button>
+
+                       <br/>
+                       <br/>
                         <Button variant="success" href={song.external_urls.spotify} target="_blank">Listen on Spotify</Button>
                         <Card.Text>Switch slides to see Artist/Artists Info!!!</Card.Text>
                       </Card.Body>
