@@ -1,13 +1,16 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button,Card,Row,Container,InputGroup,FormControl} from 'react-bootstrap';
+import {likeSong,dislikeSong, getLikedSongsSortedByLikes} from '../../data/music';
+import { AuthContext } from '../context/AuthContext';
 
 
 function Display() {
     const[searchTerm,setsearchTerm]=useState('');
     const [token, setToken] = useState('');
     const [tracks, setTracks] = useState([]);
+    const { currentUser } = useContext(AuthContext);
 
     useEffect(() => {
     async function to() {
@@ -41,6 +44,31 @@ function Display() {
     }
   };
 
+  const handleLike = async (track) => {
+    try {
+      console.log('track:', track);
+      await likeSong(currentUser.uid, {
+        song_name: track.name,
+        song_id: track.id,
+        artists: track.artists.map(artist => ({ id: artist.id, name: artist.name })),
+        preview_url: track.preview_url,
+        song_url: track.external_urls.spotify,
+        image_url: track.album.images[0]?.url
+      });
+    } catch (error) {
+      console.error('Error liking song:', error);
+    }
+  };
+
+  const handleDislike = async (track) => {
+    try {
+      await dislikeSong(currentUser.uid, track.id);
+      console.log('Disliked song successfully!');
+    } catch (error) {
+      console.error('Error disliking song:', error);
+    }
+  };
+
     return (
     <div>
         <Container>
@@ -68,6 +96,16 @@ function Display() {
                                 <Card.Text>
                                     Artist: {track.artists.map(artist => artist.name).join(', ')}
                                 </Card.Text>
+                                
+                                <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
+                                  <Button variant="success" onClick={() => handleLike(track)}>
+                                    <i className="bi bi-heart-fill"></i> Like
+                                  </Button>
+                                  <Button variant="danger" onClick={() => handleDislike(track)}>
+                                    <i className="bi bi-x-lg"></i> Dislike
+                                  </Button>
+                              </div>
+                                
                                 <Button variant="primary" href={track.external_urls.spotify} target="_blank">Listen on Spotify</Button>
                             </Card.Body>
                         </Card>
