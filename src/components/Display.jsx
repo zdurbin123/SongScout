@@ -11,6 +11,8 @@ function Display() {
     const [token, setToken] = useState('');
     const [tracks, setTracks] = useState([]);
     const { currentUser } = useContext(AuthContext);
+    const [likedSongs, setLikedSongs] = useState([]);
+    const [dislikedSongs, setDislikedSongs] = useState([]);
 
     useEffect(() => {
     async function to() {
@@ -55,6 +57,8 @@ function Display() {
         song_url: track.external_urls.spotify,
         image_url: track.album.images[0]?.url
       });
+      setLikedSongs([...likedSongs, track.id]); // Add the song ID to likedSongs
+      setDislikedSongs(dislikedSongs.filter(id => id !== track.id));
     } catch (error) {
       console.error('Error liking song:', error);
     }
@@ -64,6 +68,8 @@ function Display() {
     try {
       await dislikeSong(currentUser.uid, track.id);
       console.log('Disliked song successfully!');
+      setDislikedSongs([...dislikedSongs, track.id]); // Add the song ID to dislikedSongs
+    setLikedSongs(likedSongs.filter(id => id !== track.id));
     } catch (error) {
       console.error('Error disliking song:', error);
     }
@@ -98,10 +104,20 @@ function Display() {
                                 </Card.Text>
                                 
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
-                                  <Button variant="success" onClick={() => handleLike(track)}>
+                                  {/* <Button variant="success" onClick={() => handleLike(track)}> */}
+                                  <Button
+                                            variant="success"
+                                            onClick={() => handleLike(track)}
+                                            disabled={likedSongs.includes(track.id)} // Disable if already liked
+                                          >
                                     <i className="bi bi-heart-fill"></i> Like
                                   </Button>
-                                  <Button variant="danger" onClick={() => handleDislike(track)}>
+                                  {/* <Button variant="danger" onClick={() => handleDislike(track)}> */}
+                                  <Button
+                                        variant="danger"
+                                        onClick={() => handleDislike(track)}
+                                        disabled={dislikedSongs.includes(track.id)} // Disable if already disliked
+                                      >
                                     <i className="bi bi-x-lg"></i> Dislike
                                   </Button>
                               </div>

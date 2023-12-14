@@ -51,6 +51,9 @@ async function likeSong(uid, { song_name, song_id, artists, preview_url,song_url
                     await setDoc(likesDocRef, { likedSong,likes: 1 });
                 }
           console.log('Liked song successfully!');
+          const dislikedSongs = userData.dislikedsongs || [];
+          const updatedDislikedSongs = dislikedSongs.filter(s => s.song_id !== song.song_id);
+          await updateDoc(userDocRef, { dislikedsongs: updatedDislikedSongs });
         } else {
           console.log('Song already liked!');
         }
@@ -73,7 +76,7 @@ async function likeSong(uid, { song_name, song_id, artists, preview_url,song_url
       if (userDoc.exists()) {
         const userData = userDoc.data();
         const likedsongs = userData.likedsongs || [];
-        const updatedLikedsongs = likedsongs.filter((likedSong) => likedSong.song_id !== song_id);
+        const updatedLikedsongs = likedsongs.filter(s => s.song_id !== song_id);
         await updateDoc(userDocRef, { likedsongs: updatedLikedsongs });
         //update likes collection
         const likesDoc = await getDoc(likesDocRef);
