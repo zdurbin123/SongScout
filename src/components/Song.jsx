@@ -158,7 +158,7 @@ const handleDislike = async (track) => {
                             <strong>Available in Markets:</strong> {song.available_markets && song.available_markets.join(', ')}
                           </Card.Text>
                         )}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '21px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '21px', marginBottom: '20px' }}>
                         {song.preview_url &&
                         <div>
                         <audio id="song-preview" src={song.preview_url} preload="none"></audio>
