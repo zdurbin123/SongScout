@@ -57,7 +57,7 @@ function Display() {
         song_url: track.external_urls.spotify,
         image_url: track.album.images[0]?.url
       });
-      setLikedSongs([...likedSongs, track.id]); // Add the song ID to likedSongs
+      setLikedSongs([...likedSongs, track.id]); 
       setDislikedSongs(dislikedSongs.filter(id => id !== track.id));
     } catch (error) {
       console.error('Error liking song:', error);
@@ -68,8 +68,8 @@ function Display() {
     try {
       await dislikeSong(currentUser.uid, track.id);
       console.log('Disliked song successfully!');
-      setDislikedSongs([...dislikedSongs, track.id]); // Add the song ID to dislikedSongs
-    setLikedSongs(likedSongs.filter(id => id !== track.id));
+      setDislikedSongs([...dislikedSongs, track.id]); 
+      setLikedSongs(likedSongs.filter(id => id !== track.id));
     } catch (error) {
       console.error('Error disliking song:', error);
     }

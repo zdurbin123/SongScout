@@ -1,6 +1,7 @@
 import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { useParams } from 'react-router-dom';
 import {likeSong,dislikeSong, getLikedSongsSortedByLikes} from '../../data/music';
 import { AuthContext } from '../context/AuthContext';
 
@@ -12,9 +13,15 @@ function Song() {
     const [artistsDetails, setArtistsDetails] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const { currentUser } = useContext(AuthContext);
+    const [likedSongs, setLikedSongs] = useState([]);
+    const [dislikedSongs, setDislikedSongs] = useState([]);
+    
+
   // waiting for parent class to send the id to this func for me to display the info
   //one more light 
-  const id="5b2bu6yyATC1zMXDGScJ2d"
+  const { id } = useParams();
+  //const id="3xXBsjrbG1xQIm1xv1cKOt" SONG:ONE MORE LIGHT- LINKIN PARK
+  //const id="5b2bu6yyATC1zMXDGScJ2d" EXAMPLE FOR SHOWING MUTIPLE ARTISTS
 
     useEffect(() => {
         async function to() {
@@ -98,6 +105,8 @@ const handleLike = async (track) => {
       song_url: track.external_urls.spotify,
       image_url: track.album.images[0]?.url
     });
+      setLikedSongs([...likedSongs, track.id]); 
+      setDislikedSongs(dislikedSongs.filter(id => id !== track.id));
   } catch (error) {
     console.error('Error liking song:', error);
   }
@@ -107,6 +116,8 @@ const handleDislike = async (track) => {
   try {
     await dislikeSong(currentUser.uid, track.id);
     console.log('Disliked song successfully!');
+    setDislikedSongs([...dislikedSongs, track.id]); 
+    setLikedSongs(likedSongs.filter(id => id !== track.id));
   } catch (error) {
     console.error('Error disliking song:', error);
   }
@@ -136,12 +147,21 @@ const handleDislike = async (track) => {
                           <strong>Artists:</strong> {song.artists && song.artists.map(artist => artist.name).join(', ')}
                         </Card.Text>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '21px', marginBottom: '20px' }}>
-                        <Button variant="success" onClick={() => handleLike(song)}>
-                                    <i className="bi bi-heart-fill"></i> Like
-                                  </Button>
-                                  <Button variant="danger" onClick={() => handleDislike(song)}>
-                                    <i className="bi bi-x-lg"></i> Dislike
-                                  </Button>
+                        <Button
+                                variant="success"
+                                onClick={() => handleLike(song)}
+                                disabled={likedSongs.includes(song.id)}
+                            >
+                                <i className="bi bi-heart-fill"></i> Like
+                            </Button>
+                            <Button
+                                variant="danger"
+                                onClick={() => handleDislike(song)}
+                                disabled={dislikedSongs.includes(song.id)}
+                            >
+                                <i className="bi bi-x-lg"></i> Dislike
+                            </Button>
+
                                   </div>
                         {song.album && (
                           <Card.Text>

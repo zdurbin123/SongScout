@@ -27,7 +27,7 @@ function App() {
         <Routes>
           <Route path='/' element={<Landing />} />
           <Route path='/Display' element={<Display />} />
-          <Route path='/Song' element={<Song />} />
+          <Route path='/Song/:id' element={<Song />} />
           <Route path='/Artists' element={<Artists />} />
           <Route path='/Trending' element={<Trending />} />
           <Route path='/home' element={<PrivateRoute />}>
