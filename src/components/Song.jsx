@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect,useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import {likeSong,dislikeSong, getLikedSongsSortedByLikes} from '../../data/music';
+import { AuthContext } from '../context/AuthContext';
 
 import Carousel from 'react-bootstrap/Carousel';
 import {Button,Card,Row,Col,Container} from 'react-bootstrap';
@@ -9,6 +11,7 @@ function Song() {
     const [song, setSong] = useState({});
     const [artistsDetails, setArtistsDetails] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
+    const { currentUser } = useContext(AuthContext);
   // waiting for parent class to send the id to this func for me to display the info
   //one more light 
   const id="5b2bu6yyATC1zMXDGScJ2d"
@@ -83,6 +86,31 @@ function Song() {
         setIsPlaying(!isPlaying); 
     }
 }
+
+const handleLike = async (track) => {
+  try {
+    console.log('track:', track);
+    await likeSong(currentUser.uid, {
+      song_name: track.name,
+      song_id: track.id,
+      artists: track.artists.map(artist => ({ id: artist.id, name: artist.name })),
+      preview_url: track.preview_url,
+      song_url: track.external_urls.spotify,
+      image_url: track.album.images[0]?.url
+    });
+  } catch (error) {
+    console.error('Error liking song:', error);
+  }
+};
+
+const handleDislike = async (track) => {
+  try {
+    await dislikeSong(currentUser.uid, track.id);
+    console.log('Disliked song successfully!');
+  } catch (error) {
+    console.error('Error disliking song:', error);
+  }
+};
      
     return (
         <div>
@@ -107,6 +135,14 @@ function Song() {
                         <Card.Text className="lead">
                           <strong>Artists:</strong> {song.artists && song.artists.map(artist => artist.name).join(', ')}
                         </Card.Text>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '21px', marginBottom: '20px' }}>
+                        <Button variant="success" onClick={() => handleLike(track)}>
+                                    <i className="bi bi-heart-fill"></i> Like
+                                  </Button>
+                                  <Button variant="danger" onClick={() => handleDislike(track)}>
+                                    <i className="bi bi-x-lg"></i> Dislike
+                                  </Button>
+                                  </div>
                         {song.album && (
                           <Card.Text>
                             <strong>Album:</strong> {song.album.name} <em>({song.album.album_type})</em>
@@ -122,7 +158,7 @@ function Song() {
                             <strong>Available in Markets:</strong> {song.available_markets && song.available_markets.join(', ')}
                           </Card.Text>
                         )}
-                        <div style={{ display: 'flex', alignItems: 'center', gap: '27px' }}>
+                        <div style={{ display: 'flex', alignItems: 'center', gap: '21px' }}>
                         {song.preview_url &&
                         <div>
                         <audio id="song-preview" src={song.preview_url} preload="none"></audio>
@@ -131,7 +167,8 @@ function Song() {
                             {isPlaying ? ' Stop' : ' Play Preview'}
                         </Button>
                         </div>}
-                        <Button variant="success" href={song.external_urls.spotify} target="_blank">Listen on Spotify</Button>
+                        
+                        <Button variant="primary" href={song.external_urls.spotify} target="_blank">Listen on Spotify</Button>
                         </div>
                         <br/>
                         <Card.Text>Switch slides to see Artist/Artists Info!!!</Card.Text>
