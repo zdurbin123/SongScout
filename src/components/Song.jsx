@@ -136,10 +136,10 @@ const handleDislike = async (track) => {
                           <strong>Artists:</strong> {song.artists && song.artists.map(artist => artist.name).join(', ')}
                         </Card.Text>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '21px', marginBottom: '20px' }}>
-                        <Button variant="success" onClick={() => handleLike(track)}>
+                        <Button variant="success" onClick={() => handleLike(song)}>
                                     <i className="bi bi-heart-fill"></i> Like
                                   </Button>
-                                  <Button variant="danger" onClick={() => handleDislike(track)}>
+                                  <Button variant="danger" onClick={() => handleDislike(song)}>
                                     <i className="bi bi-x-lg"></i> Dislike
                                   </Button>
                                   </div>
@@ -158,7 +158,7 @@ const handleDislike = async (track) => {
                             <strong>Available in Markets:</strong> {song.available_markets && song.available_markets.join(', ')}
                           </Card.Text>
                         )}
-                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '21px', marginBottom: '20px' }}>
+                        <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '21px', marginBottom: '20px' }}> 
                         {song.preview_url &&
                         <div>
                         <audio id="song-preview" src={song.preview_url} preload="none"></audio>
