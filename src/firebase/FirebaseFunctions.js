@@ -69,6 +69,7 @@ async function doPasswordReset(email) {
 async function doSignOut() {
   let auth = getAuth();
   await signOut(auth);
+  window.location.reload()
 }
 
 export {
