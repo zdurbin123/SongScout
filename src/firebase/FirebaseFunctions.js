@@ -29,7 +29,7 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
     }
   const result = firstEnglishCharacter || '$';
   await axios.post('http://localhost:3000/api/generateImage', {
-    name: result,
+    name: result.toUpperCase(),
     uid: auth.currentUser.uid,
     backgroundColor: 'black',
     fontColor: 'white'
@@ -76,7 +76,7 @@ async function doSocialSignIn() {
           }
         const result = firstEnglishCharacter || '$';
         await axios.post('http://localhost:3000/api/generateImage', {
-          name: result,
+          name: result.toUpperCase(),
           uid: auth.currentUser.uid,
           backgroundColor: 'black',
           fontColor: 'white'
@@ -100,7 +100,6 @@ async function doPasswordReset(email) {
 async function doSignOut() {
   let auth = getAuth();
   await signOut(auth);
-  window.location.reload()
 }
 
 export {

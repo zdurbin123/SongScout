@@ -152,10 +152,13 @@ function UserProfile() {
             <label>New Username:</label>
             <input
               type="text"
-              className="form-control"
+              className={`form-control ${newUsername && !/[a-zA-Z]/.test(newUsername) ? 'is-invalid' : ''}`}
               value={newUsername}
               onChange={(e) => setNewUsername(e.target.value)}
             />
+            {newUsername && !/[a-zA-Z]/.test(newUsername) && (
+              <div className="invalid-feedback">Username must contain at least one letter</div>
+            )}
           </div>
           <button
             className="btn btn-primary"
