@@ -12,25 +12,25 @@ function UserProfile() {
   const [newUsername, setNewUsername] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('black');
   const [fontColor, setFontColor] = useState('white');
-  const [profileBanner, setProfileBanner] = useState('');
   const [bannerImage, setBannerImage] = useState(null);
   const [imageExists, setImageExists] = useState(true);
   const imagePath = "../../images/" + currentUser.uid + ".jpg"; // Use currentUser.photoURL as imagePath
-  const bannerImagePath = `../../images/${currentUser.uid}_banner.jpg`;
-
+  const [bannerImagePath, setBannerImagePath] = useState('');
   useEffect(() => {
     const fetchUserProfile = async () => {
         try {
+          let path = `../../images/${currentUser.uid}_banner.jpg`;
           const userProfileData = await getUserProfileById(currentUser.uid);
+          if (userProfileData.profileBanner === '') {
+            path = '';
+          } 
+          setBannerImagePath(path);
           setUserProfile(userProfileData);
           if (userProfileData && userProfileData.backgroundColor) {
             setBackgroundColor(userProfileData.backgroundColor);
           }
           if (userProfileData && userProfileData.fontColor) {
             setFontColor(userProfileData.fontColor);
-          }
-          if (userProfileData && userProfileData.profileBanner) {
-            setProfileBanner(userProfileData.profileBanner);
           }
         } catch (error) {
           console.error('Error fetching user profile:', error);
@@ -59,6 +59,7 @@ function UserProfile() {
         }
 
         const result = firstEnglishCharacter || '$';
+        let updatedBannerImagePath = bannerImagePath;
 
         // Upload banner image
         if (bannerImage && currentUser.uid) {
@@ -71,6 +72,7 @@ function UserProfile() {
               'Content-Type': 'multipart/form-data',
             },
           });
+          updatedBannerImagePath = `../../images/${currentUser.uid}_banner.jpg`;
         } else {
           console.error('Error: currentUser.uid or bannerImage is undefined');
           // Handle the error or return an appropriate response
@@ -83,7 +85,7 @@ function UserProfile() {
           userProfile.likedsongs,
           backgroundColor,
           fontColor,
-          bannerImagePath
+          updatedBannerImagePath
         );
 
         await axios.post('http://localhost:3000/api/generateImage', {
