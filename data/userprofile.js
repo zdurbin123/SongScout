@@ -37,6 +37,7 @@ import {
   }
 
   async function createUserProfile(username, email, uid) {
+    const auth = getAuth();
     try {
       const usersCollection = collection(db, "users");
       const userQuery = query(usersCollection, where("uid", "==", uid));
@@ -52,8 +53,14 @@ import {
         email: email,
         uid: uid,
         likedsongs: [],
-        photoURL:""
+        photoURL:"../../images/"+uid+".jpg",
+        backgroundColor:'black',
+        fontColor:'white',
+        profileBanner:''
       });
+      await updateProfile(auth.currentUser, {
+        photoURL: "../../images/"+uid+".jpg",
+    });
       return getUserProfileById(uid);
     } catch (error) {
       console.error("Error in createUserProfile:", error);
@@ -61,7 +68,7 @@ import {
     }
   }
 
-  async function updateUserProfile(username, email,uid,likedsongs,photourl){
+  async function updateUserProfile(username, email,uid,likedsongs,backgroundColor,fontColor,profileBanner){
     const userDocRef = doc(db, 'users', uid);
     const auth = getAuth();
 
@@ -70,12 +77,13 @@ import {
         username: username,
         email: email,
         likedsongs: likedsongs,
-        photoURL: photourl,
+        backgroundColor,
+        fontColor,
+        profileBanner
       };
       await setDoc(userDocRef, userProfile, { merge: true });
       await updateProfile(auth.currentUser, {
-          displayName: username,
-          photoURL: photourl,
+          displayName: username
       });
 
       console.log('User profile updated successfully!');

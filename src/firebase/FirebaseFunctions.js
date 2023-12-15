@@ -11,6 +11,7 @@ import {
   EmailAuthProvider,
   reauthenticateWithCredential
 } from 'firebase/auth';
+import axios from 'axios';
 import {createUserProfile,getUserProfileById} from '../../data/userprofile';
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
@@ -18,6 +19,21 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   await createUserWithEmailAndPassword(auth, email, password);
   await updateProfile(auth.currentUser, {displayName: displayName});
   await createUserProfile(displayName,email,auth.currentUser.uid);
+  let firstEnglishCharacter = '';
+  for (let i = 0; i < displayName.length; i++) {
+    const char = displayName.charAt(i);
+      if (/[a-zA-Z]/.test(char)) {
+        firstEnglishCharacter = char;
+        break; 
+      }
+    }
+  const result = firstEnglishCharacter || '$';
+  await axios.post('http://localhost:3000/api/generateImage', {
+    name: result,
+    uid: auth.currentUser.uid,
+    backgroundColor: 'black',
+    fontColor: 'white'
+  });
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
@@ -50,6 +66,21 @@ async function doSocialSignIn() {
     } catch (getUserProfileError) {
       if (getUserProfileError === 'User not found') {
         const newProfile = await createUserProfile(username, email, uid);
+        let firstEnglishCharacter = '';
+        for (let i = 0; i < username.length; i++) {
+          const char = username.charAt(i);
+            if (/[a-zA-Z]/.test(char)) {
+              firstEnglishCharacter = char;
+              break; 
+            }
+          }
+        const result = firstEnglishCharacter || '$';
+        await axios.post('http://localhost:3000/api/generateImage', {
+          name: result,
+          uid: auth.currentUser.uid,
+          backgroundColor: 'black',
+          fontColor: 'white'
+        });
         console.log("New User Profile:", newProfile);
       } else {
         console.error("Error in getUserProfileById:", getUserProfileError);
