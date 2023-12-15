@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, Row, Container, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Card, Row,Col, Container, InputGroup, FormControl } from 'react-bootstrap';
 import { likeSong, dislikeSong } from '../../data/music';
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 
 function Display() {
     const [searchTerm, setsearchTerm] = useState('');
@@ -100,9 +101,11 @@ const handleDislikeSong = async (track) => {
          </InputGroup>
          </Container>
          <Container>
-         <Row  lg={3} className="g-4">
+         <Row  lg={4} className="g-4">
          {tracks.map((track, index) => (
-                        <Card key={index} style={{ width: '18rem' }}>
+            <Col key={index} md={6} lg={3}>
+                          <Link to={`/Song/${track.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
+                        <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
                             <Card.Img variant="top" src={track.album.images[0]?.url} />
                             <Card.Body>
                                 <Card.Title>{track.name}</Card.Title>
@@ -133,6 +136,8 @@ const handleDislikeSong = async (track) => {
                                 <Button variant="primary" href={track.external_urls.spotify} target="_blank">Listen on Spotify</Button>
                             </Card.Body>
                         </Card>
+                          </Link>
+                          </Col>
                     ))}
 
         </Row>

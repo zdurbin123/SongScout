@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button,Card,Row,Container,InputGroup,FormControl} from 'react-bootstrap';
+import {Button,Card,Row,Col,Container,InputGroup,FormControl} from 'react-bootstrap';
 
 
 function Display() {
@@ -62,9 +62,10 @@ function Display() {
 
 
          <Container>
-         <Row  lg={3} className="g-4">
+         <Row  lg={4} className="g-4">
          {artists.map((artist, index) => (
-                        <Card key={index} style={{ width: '18rem' }}>
+                      <Col key={index} md={6} lg={3}>
+                        <Card key={index}  style={{ width: '18rem' }} className="h-100 w-100">
                         <Card.Img variant="top" src={artist.images[0]?.url} alt={`${artist.name}`} />
                         <Card.Body>
                             <Card.Title>{artist.name}</Card.Title>
@@ -78,6 +79,7 @@ function Display() {
                             <Button variant="primary" href={artist.external_urls.spotify} target="_blank">View on Spotify</Button>
                         </Card.Body>
                     </Card>
+                    </Col>
                     ))}
 
         </Row>

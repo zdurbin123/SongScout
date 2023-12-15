@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button,Card,Row,Col,Container,InputGroup,FormControl, CardImg} from 'react-bootstrap';
 import { getLikedSongs } from '../../data/music';
 import { getAuth } from 'firebase/auth';
+import { Link } from 'react-router-dom';
 
 function LikedSongs() {
   const [likedSongs, setLikedSongs] = useState([]);
@@ -26,11 +27,13 @@ function LikedSongs() {
   return (
     <div>
       <h1>Liked Songs</h1>
-      <Container className="mt-4" >
-               <Row  lg={3} className="g-4">
+      <Container>
+         <Row  lg={4} className="g-4">
+    
         {likedSongs.map(song => (
-     
-            <Card key={song.song_id} className="mb-3">
+          <Col key={song.song_id} md={6} lg={3}>
+            <Link to={`/Song/${song.song_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
+            <Card  className="h-100 w-100" style={{ width: '18rem' }}>
               {song.image_url && <Card.Img variant="top" src={song.image_url} alt={song.name} />}
               <Card.Body>
                 <Card.Title className="display-4">{song.name}</Card.Title>
@@ -42,7 +45,8 @@ function LikedSongs() {
                 </Button>
               </Card.Body>
             </Card>
-         
+            </Link>
+          </Col>
         ))}
       </Row>
       </Container>

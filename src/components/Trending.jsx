@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, Row, Container } from 'react-bootstrap';
+import { Button, Card, Row, Container,Col } from 'react-bootstrap';
 import { likeSong, dislikeSong,getLikedSongsSortedByLikes } from '../../data/music';
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
+import { Link } from 'react-router-dom';
 /*Promise.all Works
 Takes an Iterable of Promises: Promise.all accepts an iterable (like an array) of promises.
 
@@ -122,10 +123,12 @@ if (trendingSongs.length === 0) {
 
     return (
     <div>
-               <Container className="mt-4" >
-               <Row  lg={3} className="g-4">
+               <Container >
+               <Row  lg={4} className="g-4">
                {trendingSongs.map((song, index) => (
-                <Card key={index} className="mb-3">
+               <Col key={index} xs={12} md={6} lg={4}>
+                <Link to={`/Song/${song.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
+                <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
                 
                   
                       {song.album && song.album.images && song.album.images[0] && (
@@ -181,6 +184,8 @@ if (trendingSongs.length === 0) {
                  
                  
                 </Card>
+                </Link>
+                </Col>
                 ))}
                  </Row>
               </Container>
