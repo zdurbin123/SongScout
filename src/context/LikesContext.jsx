@@ -1,5 +1,5 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
-import { getLikedSongs } from '../../data/music'; 
+import { getLikedSongs, getDislikedSongs } from '../../data/music'; 
 import { AuthContext } from './AuthContext';
 
 const LikesContext = createContext();
@@ -9,20 +9,15 @@ const LikesProvider = ({ children }) => {
     const [dislikedSongs, setDislikedSongs] = useState([]);
     const { currentUser } = useContext(AuthContext);
 
-    // Fetch data on component mount
     useEffect(() => {
-        // Initialize from local storage
-        const localLikedSongs = JSON.parse(localStorage.getItem('likedSongs')) || [];
-        const localDislikedSongs = JSON.parse(localStorage.getItem('dislikedSongs')) || [];
-        setLikedSongs(localLikedSongs);
-        setDislikedSongs(localDislikedSongs);
-
         const fetchUserLikesAndDislikes = async () => {
             if (currentUser?.uid) {
                 try {
-                    const userData = await getLikedSongs(currentUser.uid);
-                    setLikedSongs(userData.likedsongs?.map(song => song.song_id) || localLikedSongs);
-                    setDislikedSongs(userData.dislikedsongs?.map(song => song.song_id) || localDislikedSongs);
+                    const userLikedSongs = await getLikedSongs(currentUser.uid);
+                    setLikedSongs(userLikedSongs.map(song => song.song_id));
+
+                    const userDislikedSongs = await getDislikedSongs(currentUser.uid);
+                    setDislikedSongs(userDislikedSongs.map(song => song.song_id));
                 } catch (error) {
                     console.error('Error fetching user likes and dislikes:', error);
                 }
@@ -31,32 +26,19 @@ const LikesProvider = ({ children }) => {
         fetchUserLikesAndDislikes();
     }, [currentUser]);
 
-    // Update local storage when likedSongs or dislikedSongs change
-    useEffect(() => {
-        localStorage.setItem('likedSongs', JSON.stringify(likedSongs));
-        localStorage.setItem('dislikedSongs', JSON.stringify(dislikedSongs));
-    }, [likedSongs, dislikedSongs]);
-
     const handleLike = (songId) => {
-        const newLikedSongs = [...likedSongs, songId];
-        const newDislikedSongs = dislikedSongs.filter(id => id !== songId);
-    
-        setLikedSongs(newLikedSongs);
-        setDislikedSongs(newDislikedSongs);
-        localStorage.setItem('likedSongs', JSON.stringify(newLikedSongs));
-        localStorage.setItem('dislikedSongs', JSON.stringify(newDislikedSongs));
+        if (!likedSongs.includes(songId)) {
+            setLikedSongs(prev => [...prev, songId]);
+            setDislikedSongs(prev => prev.filter(id => id !== songId));
+        }
     };
     
     const handleDislike = (songId) => {
-        const newLikedSongs = likedSongs.filter(id => id !== songId);
-        const newDislikedSongs = [...dislikedSongs, songId];
-    
-        setLikedSongs(newLikedSongs);
-        setDislikedSongs(newDislikedSongs);
-        localStorage.setItem('likedSongs', JSON.stringify(newLikedSongs));
-        localStorage.setItem('dislikedSongs', JSON.stringify(newDislikedSongs));
+        if (!dislikedSongs.includes(songId)) {
+            setDislikedSongs(prev => [...prev, songId]);
+            setLikedSongs(prev => prev.filter(id => id !== songId));
+        }
     };
-    
 
     return (
         <LikesContext.Provider value={{ likedSongs, dislikedSongs, handleLike, handleDislike }}>
@@ -64,10 +46,5 @@ const LikesProvider = ({ children }) => {
         </LikesContext.Provider>
     );
 };
-export {LikesContext,LikesProvider}
 
-
-
-
-
-
+export { LikesContext, LikesProvider };

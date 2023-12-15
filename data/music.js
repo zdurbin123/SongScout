@@ -119,6 +119,27 @@ async function likeSong(uid, { song_name, song_id, artists, preview_url,song_url
     }
   }
 
+  async function getDislikedSongs(uid) {
+    const userDocRef = doc(db, 'users', uid);
+    try {
+      const userDoc = await getDoc(userDocRef);
+  
+      if (userDoc.exists()) {
+        const userData = userDoc.data();
+        const dislikedsongs = userData.dislikedsongs || [];
+  
+        console.log('Disliked songs:', dislikedsongs);
+        return dislikedsongs;
+      } else {
+        console.error('User not found');
+        throw 'User not found';
+      }
+    } catch (error) {
+        console.error('Error getting disliked songs:', error);
+        throw error;
+    }
+  }
+
   async function getLikedSongsSortedByLikes() {
     try {
         const querySnapshot = await getDocs(query(
@@ -144,5 +165,6 @@ async function likeSong(uid, { song_name, song_id, artists, preview_url,song_url
     likeSong,
     dislikeSong,
     getLikedSongs,
+    getDislikedSongs,
     getLikedSongsSortedByLikes
   }
