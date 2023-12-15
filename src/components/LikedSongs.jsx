@@ -26,10 +26,11 @@ function LikedSongs() {
   return (
     <div>
       <h1>Liked Songs</h1>
-      <Row>
+      <Container className="mt-4" >
+               <Row  lg={3} className="g-4">
         {likedSongs.map(song => (
-          <Col md={4} key={song.song_id}>
-            <Card>
+     
+            <Card key={song.song_id} className="mb-3">
               {song.image_url && <Card.Img variant="top" src={song.image_url} alt={song.name} />}
               <Card.Body>
                 <Card.Title className="display-4">{song.name}</Card.Title>
@@ -41,9 +42,10 @@ function LikedSongs() {
                 </Button>
               </Card.Body>
             </Card>
-          </Col>
+         
         ))}
       </Row>
+      </Container>
     </div>
   );
 }
