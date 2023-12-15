@@ -83,7 +83,7 @@ function UserProfile() {
           userProfile.likedsongs,
           backgroundColor,
           fontColor,
-          profileBanner
+          bannerImagePath
         );
 
         await axios.post('http://localhost:3000/api/generateImage', {
