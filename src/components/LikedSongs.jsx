@@ -7,9 +7,9 @@ import { getAuth } from 'firebase/auth';
 
 function LikedSongs() {
   const [likedSongs, setLikedSongs] = useState([]);
-  const auth = getAuth();
 
   useEffect(() => {
+    const auth = getAuth();
     async function fetchLikedSongs() {
       try {
         const uid = auth.currentUser.uid; // Replace with the actual user ID
