@@ -125,9 +125,9 @@ if (trendingSongs.length === 0) {
                <Row  lg={4} className="g-4">
                {trendingSongs.map((song, index) => (
                <Col key={index} xs={12} md={6} lg={4}>
-                <Link to={`/Song/${song.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
+               
                 <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
-                
+                <Link to={`/Song/${song.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
                   
                       {song.album && song.album.images && song.album.images[0] && (
                         <Card.Img
@@ -144,6 +144,10 @@ if (trendingSongs.length === 0) {
                         <Card.Text className="lead">
                           <strong>Artists:</strong> {song.artists && song.artists.map(artist => artist.name).join(', ')}
                         </Card.Text>
+                       
+                        </Card.Body>
+                        </Link>
+                        <Card.Body>
                         <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '21px', marginBottom: '20px' }}>
                         
                                  <Button
@@ -182,7 +186,7 @@ if (trendingSongs.length === 0) {
                  
                  
                 </Card>
-                </Link>
+              
                 </Col>
                 ))}
                  </Row>
