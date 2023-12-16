@@ -92,29 +92,27 @@ const handleDislikeSong = async (track) => {
         handleLike(track.id); // Removing it from disliked songs
     }
 };
-useEffect(()=>{
-  if (!token) return; 
-  async function SongInfo(){
-      console.log("hi")
-      const parameters = {
-          headers:{
-            'Content-Type': 'application/json',
-              'Authorization': `Bearer ${token}`
-          }
-      }
-      try {
-        const { data } = await axios.get(`https://api.spotify.com/v1/tracks/${encodeURIComponent(id)}`, parameters);
-        setSong(data)
-        if (data.artists && data.artists.length > 0) {
-          artistfunc(data.artists);
-      } 
-        console.log(data);
-    } catch (error) {
-        console.error('Error from Spotify:', error);
-    }
-    }
-  SongInfo()
-},[token])
+// useEffect(()=>{
+//   if (!token) return; 
+//   async function SongInfo(){
+//       console.log("hi")
+//       const parameters = {
+//           headers:{
+//             'Content-Type': 'application/json',
+//               'Authorization': `Bearer ${token}`
+//           }
+//       }
+//       try {
+//         const { data } = await axios.get(`https://api.spotify.com/v1/tracks/${encodeURIComponent(id)}`, parameters);
+//         setSong(data)
+        
+//         console.log(data);
+//     } catch (error) {
+//         console.error('Error from Spotify:', error);
+//     }
+//     }
+//   SongInfo()
+// },[token])
 
 if (trendingSongs.length === 0) {
   return <div>Loading trending songs...</div>;
