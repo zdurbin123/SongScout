@@ -111,15 +111,18 @@ const handleDislikeSong = async (track) => {
          <Row  lg={4} className="g-4">
          {tracks.map((track, index) => (
             <Col key={index} md={6} lg={3}>
-                          <Link to={`/Song/${track.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
+                          
                         <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
+                        <Link to={`/Song/${track.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
                             <Card.Img variant="top" src={track.album.images[0]?.url} />
                             <Card.Body>
                                 <Card.Title>{track.name}</Card.Title>
                                 <Card.Text>
                                     Artist: {track.artists.map(artist => artist.name).join(', ')}
                                 </Card.Text>
-                                
+                                </Card.Body>
+                                </Link>
+                                <Card.Body>
                                 <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', gap: '10px', marginBottom: '20px' }}>
                                   {/* <Button variant="success" onClick={() => handleLike(track)}> */}
                                 
@@ -143,7 +146,7 @@ const handleDislikeSong = async (track) => {
                                 <Button variant="primary" href={track.external_urls.spotify} target="_blank">Listen on Spotify</Button>
                             </Card.Body>
                         </Card>
-                          </Link>
+                         
                           </Col>
                     ))}
 

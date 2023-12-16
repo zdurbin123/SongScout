@@ -22,6 +22,8 @@ app.use(urlencoded({extended: true}));
 app.get('/', async (req, res) => {
   const client_id = "447d1396abd344af93d97b6d31c44737"
   const client_secret = "fdb8073e596a4f5fabad20f501e8c453"
+  //const client_id = db2ef209d1d74d45b1ae4ea2944d9267
+  //const client_secret =3edeae8d28054c1d9d753f6a5267a067
   const authOptions = {
     method: 'post',
     url: 'https://accounts.spotify.com/api/token',
