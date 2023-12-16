@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 function RecommendationResults() {
     const [token, setToken] = useState('');
     const [recommendations, setRecommendations] = useState([]);
+    const [error, setError] = useState(null);
     const [searchParams, setSearchParams] = useState({
         limit: 20, 
         seed_genres: '',
@@ -44,7 +45,7 @@ function RecommendationResults() {
             setRecommendations(response.data.tracks);
             console.log(response.data.tracks)
         } catch (error) {
-            console.error('Error fetching recommendations:', error);
+          setError('Error fetching recommendations');
         }
     };
 
@@ -143,10 +144,10 @@ function RecommendationResults() {
             </Form>
            
             <Button onClick={fetchRecommendations} className="mb-4">Get Recommendations</Button>
-
+            {error && <p>{error}</p>} 
            
             <Row>
-                {recommendations.map((track, index) => (
+                {recommendations&&recommendations.map((track, index) => (
                     <Col key={index} md={4}>
                         <Card>
                             <Card.Img variant="top" src={track.album.images[0]?.url} />

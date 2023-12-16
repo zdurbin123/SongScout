@@ -15,7 +15,6 @@ import Trending from './Trending';
 //hey its jey
 import {AuthProvider} from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
-import RecommendationOptions from './RecommendationOptions';
 import RecommendationResults from './RecommendationResults';
 import LikedSongs from './LikedSongs';
 function App() {
@@ -41,7 +40,6 @@ function App() {
           <Route path='/signin' element={<SignIn />} />
           <Route path='/signup' element={<SignUp />} />
           <Route path='/likedsongs' element={<LikedSongs/>}/>
-          <Route path='/ChooseRecommend' element={<RecommendationOptions />} />
           <Route path='/RecommedResults' element={<RecommendationResults />}/>
           </Routes>
       </div>
