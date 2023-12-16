@@ -11,6 +11,7 @@ import {
     updateDoc,
     getDoc,
   } from "firebase/firestore/lite";
+  import { getAuth, updateProfile } from 'firebase/auth';
   import { initializeApp } from "firebase/app";
   import FirebaseConfig from '../src/firebase/FirebaseConfig'
   
@@ -36,6 +37,7 @@ import {
   }
 
   async function createUserProfile(username, email, uid) {
+    const auth = getAuth();
     try {
       const usersCollection = collection(db, "users");
       const userQuery = query(usersCollection, where("uid", "==", uid));
@@ -51,8 +53,14 @@ import {
         email: email,
         uid: uid,
         likedsongs: [],
-        dislikedsongs: []
+        photoURL:"../../images/"+uid+".jpg",
+        backgroundColor:'black',
+        fontColor:'white',
+        profileBanner:''
       });
+      await updateProfile(auth.currentUser, {
+        photoURL: "../../images/"+uid+".jpg",
+    });
       return getUserProfileById(uid);
     } catch (error) {
       console.error("Error in createUserProfile:", error);
@@ -60,7 +68,33 @@ import {
     }
   }
 
+  async function updateUserProfile(username, email,uid,likedsongs,backgroundColor,fontColor,profileBanner){
+    const userDocRef = doc(db, 'users', uid);
+    const auth = getAuth();
+
+    try {
+      const userProfile = {
+        username: username,
+        email: email,
+        likedsongs: likedsongs,
+        backgroundColor,
+        fontColor,
+        profileBanner
+      };
+      await setDoc(userDocRef, userProfile, { merge: true });
+      await updateProfile(auth.currentUser, {
+          displayName: username
+      });
+
+      console.log('User profile updated successfully!');
+    } catch (error) {
+      console.error('Error updating user profile:', error);
+      throw error;
+    }
+  }
+
   export {
     getUserProfileById,
-    createUserProfile
+    createUserProfile,
+    updateUserProfile
   }
