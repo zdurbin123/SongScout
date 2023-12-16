@@ -100,6 +100,7 @@ async function doPasswordReset(email) {
 async function doSignOut() {
   let auth = getAuth();
   await signOut(auth);
+  
 }
 
 export {
