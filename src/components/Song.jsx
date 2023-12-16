@@ -116,7 +116,14 @@ const handleLikeSong = async (track) => {
 const handleDislikeSong = async (track) => {
   if (!dislikedSongs.includes(track.id)) {
       try {
-          await dislikeSong(currentUser.uid, track.id);
+          await dislikeSong(currentUser.uid, {
+            song_name: track.name,
+            song_id: track.id,
+            artists: track.artists.map(artist => ({ id: artist.id, name: artist.name })),
+            preview_url: track.preview_url,
+            song_url: track.external_urls.spotify,
+            image_url: track.album.images[0]?.url
+        });
           handleDislike(track.id);
       } catch (error) {
           console.error('Error disliking song:', error);
