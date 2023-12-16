@@ -91,8 +91,8 @@ async function dislikeSong(uid, { song_name, song_id, artists, preview_url, song
               await updateDoc(userDocRef, { likedsongs: updatedLikedsongs });
 
               console.log('Liked song removed successfully!');
-          } else {
-              const dislikedSong = {
+          } 
+          const dislikedSong = {
                   song_name,
                   song_id,
                   artists,
@@ -100,11 +100,10 @@ async function dislikeSong(uid, { song_name, song_id, artists, preview_url, song
                   song_url,
                   image_url
               };
-              dislikedSongs.push(dislikedSong);
-              await updateDoc(userDocRef, { dislikedsongs: dislikedSongs });
+          dislikedSongs.push(dislikedSong);
+          await updateDoc(userDocRef, { dislikedsongs: dislikedSongs });
 
-              console.log('Song added to disliked songs successfully!');
-          }
+          console.log('Song added to disliked songs successfully!');
 
           const likesDoc = await getDoc(likesDocRef);
           if (likesDoc.exists()) {
