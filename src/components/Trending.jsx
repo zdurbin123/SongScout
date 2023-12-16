@@ -6,6 +6,7 @@ const Trending = () => {
 
   useEffect(() => {
     async function to(){
+      
     const {data} = await axios.get('http://localhost:3000')
     console.log(data)
      
