@@ -8,6 +8,10 @@ import path from 'path';
 import fs from 'fs'; 
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
+import redis from 'redis'; // Import the Redis client
+
+const client = redis.createClient();
+client.connect().then(() => {});
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -17,7 +21,6 @@ const app = express();
 app.use(json());
 app.use(cors())
 app.use(urlencoded({extended: true}));
-
 //hey test
 app.get('/', async (req, res) => {
   const client_id = "447d1396abd344af93d97b6d31c44737"
@@ -100,6 +103,29 @@ app.post('/api/uploadBanner', upload.single('image'), (req, res) => {
   } catch (error) {
     console.error('Error uploading file:', error);
     res.status(500).json({ success: false, error: 'File upload failed.' });
+  }
+});
+
+app.post('/api/setCachedProfile/:uid', async(req, res) => {
+  try {
+    const { uid } = req.params;
+    const userProfile = req.body;
+    console.log('Received request for user profile with UID:', uid);
+    await client.setEx(`userProfile:${uid}`, 3600, JSON.stringify(userProfile));
+    res.status(200).json('update success');
+  } catch (error) {
+    console.error('Error in /api/getCachedProfile/:uid:', error);
+    res.status(500).json({ success: false, message: 'Internal server error' });
+  }
+});
+
+app.get('/api/getCachedProfile/:uid', async (req, res) => {
+  const { uid } = req.params;
+  const cachedProfile = await client.get(`userProfile:${uid}`);
+  if (cachedProfile) {
+    res.status(200).json(JSON.parse(cachedProfile));
+  } else {
+    res.status(200).json('');
   }
 });
 

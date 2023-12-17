@@ -21,9 +21,14 @@ function UserProfile() {
         try {
           let path = `../../images/${currentUser.uid}_banner.jpg`;
           const userProfileData = await getUserProfileById(currentUser.uid);
+          const cachedProfile = await axios.get(`http://localhost:3000/api/getCachedProfile/${currentUser.uid}`);
           if (userProfileData.profileBanner === '') {
             path = '';
           } 
+          if (!cachedProfile.data) {
+            const userProfileData = await getUserProfileById(currentUser.uid);
+            await axios.post(`http://localhost:3000/api/setCachedProfile/${currentUser.uid}`, userProfileData);
+          }
           setBannerImagePath(path);
           setUserProfile(userProfileData);
           if (userProfileData && userProfileData.backgroundColor) {
@@ -74,8 +79,9 @@ function UserProfile() {
           });
           updatedBannerImagePath = `../../images/${currentUser.uid}_banner.jpg`;
         } else {
-          console.error('Error: currentUser.uid or bannerImage is undefined');
-          // Handle the error or return an appropriate response
+          if(!currentUser.uid){
+            console.error('Error: currentUser.uid is undefined');
+          }
         }
 
         await updateUserProfile(
@@ -96,6 +102,7 @@ function UserProfile() {
         });
 
         const updatedProfile = await getUserProfileById(currentUser.uid);
+        await axios.post(`http://localhost:3000/api/setCachedProfile/${currentUser.uid}`, updatedProfile);
         setUserProfile(updatedProfile);
         window.location.href = '/account';
         console.log('User profile and image updated successfully!');
