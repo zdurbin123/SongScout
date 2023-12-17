@@ -6,6 +6,7 @@ import Home from './Home';
 import Landing from './Landing';
 import Display from'./Display';
 import Artists from'./Artists';
+import Songs from './Songs'
 import { LikesProvider } from '../context/LikesContext';
 import Song from'./Song';
 import Navigation from './Navigation';
@@ -30,6 +31,7 @@ function App() {
           <Route path='/Display' element={<Display />} />
           <Route path='/Song/:id' element={<Song />} />
           <Route path='/Artists' element={<Artists />} />
+          <Route path='/Songs' element={<Songs />} />
           <Route path='/Trending' element={<Trending />} />
           <Route path='/home' element={<PrivateRoute />}>
             <Route path='/home' element={<Home />} />
