@@ -117,6 +117,7 @@ function RecommendationResults() {
     };
 
     const fetchRecommendations = async () => {
+      setError(null);
       if(validation.checkGenres(genres)){
         alert(validation.checkGenres(genres));
       }
