@@ -10,6 +10,7 @@ import {Button,Card,Row,Col,Container} from 'react-bootstrap';
 function Song() {
     const [token, setToken] = useState('');
     const [song, setSong] = useState({});
+    const [error, setError] = useState(null);
     const [artistsDetails, setArtistsDetails] = useState([]);
     const [isPlaying, setIsPlaying] = useState(false);
     const { currentUser } = useContext(AuthContext);
@@ -50,7 +51,10 @@ function Song() {
             } 
               console.log(data);
           } catch (error) {
-              console.error('Error from Spotify:', error);
+             
+              console.log(error.response)
+          const errorMessage = `Error fetching the Song: ${error.response.data.error.message} with status code: ${error.response.data.error.status}`;
+          setError(errorMessage);
           }
           }
         SongInfo()
@@ -74,7 +78,10 @@ function Song() {
               const { data } = await axios.get(`https://api.spotify.com/v1/artists/${encodeURIComponent(art.id)}`, parameters);
               newArt.push(data);
           } catch (error) {
-              console.error('Error from Spotify when searching artist:', error);
+              
+              console.log(error.response)
+              const errorMessage = `Error from Spotify when searching artist: ${error.response.data.error.message} with status code: ${error.response.data.error.status}`;
+              setError(errorMessage);
           }
       }
   
@@ -134,7 +141,11 @@ const handleDislikeSong = async (track) => {
   }
 };
 
-
+if(error){
+  return(
+    <p>{error}</p>
+  )
+}
      
     return (
         <div>
