@@ -15,7 +15,7 @@ let alphaCodes = ["AF", "AX", "AL", "DZ", "AS", "AD", "AO", "AI", "AQ", "AG", "A
   "UZ", "VU", "VE", "VN", "VG", "VI", "WF", "EH", "YE", "ZM", "ZW"]
 
 function checkMarket (market) {
-    if(!(alphaCodes.includes(market))) return "Market must be an ISO 3166-1 alpha-2 country code.";
+    if(market&&!(alphaCodes.includes(market))) return "Market must be an ISO 3166-1 alpha-2 country code.";
     else return false;
 }
 
@@ -47,18 +47,18 @@ function checkGenres (genre) {
 }
 
 
-function checkArtists (artists) {
-    if (!artists) return "Artists must be provided";   
-    else{return false}
-}
+// function checkArtists (artists) {
+//     if (!artists) return "Artists must be provided";   
+//     else{return false}
+// }
 
-function checkSongs (songs) {
-    if (!songs) return "Songs must be provided";   
-    else{return false}
-}
+// function checkSongs (songs) {
+//     if (!songs) return "Songs must be provided";   
+//     else{return false}
+// }
 
 function checkLimit (limit){
-    if(Number.isNaN(limit) || limit == "") return "Limit must be a number";
+    if(limit&&(Number.isNaN(limit) || limit == ""))return "Limit must be a number";
     if(limit < 0 || limit > 100) return "limit must between 0 and 100";
     else{
         return false;
@@ -66,13 +66,13 @@ function checkLimit (limit){
 }
 
 function checkAcousticness (value){
-    if(Number.isNaN(value) || value == "") return "Acousticness must be a number";
+    if(value&&(Number.isNaN(value) || value == "")) return "Acousticness must be a number";
     if(value < 0 || value > 1) return " Acousticness must be between 0 and 1";
     else return false;
 }
 
 function checkDancability (value){
-    if(Number.isNaN(value) || value == "") return "Dancability must be a number";
+    if(value&&(Number.isNaN(value) || value == "")) return "Dancability must be a number";
     if(value < 0 || value > 1) return " Dancability must be between 0 and 1";
     else{
         return false;
@@ -143,9 +143,8 @@ export {
     checkTempo,
     checkLoudCross,
     checkPopCross,
-    checkTempoCross,
-    checkArtists,
-    checkSongs
+    checkTempoCross
+    
 
 
   };

@@ -125,13 +125,13 @@ function RecommendationResults() {
         alert(validation.checkMarket(market));
       }
 
-      if(validation.checkArtists(artists)){
-        alert(validation.checkArtists(artists));
-      }
+      // if(validation.checkArtists(artists)){
+      //   alert(validation.checkArtists(artists));
+      // }
 
-      if(validation.checkSongs(songs)){
-        alert(validation.checkSongs(songs));
-      }
+      // if(validation.checkSongs(songs)){
+      //   alert(validation.checkSongs(songs));
+      // }
 
       if(validation.checkLimit(limit)){
         alert(validation.checkLimit(limit));
