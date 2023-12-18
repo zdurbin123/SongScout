@@ -6,11 +6,23 @@ import { likeSong, dislikeSong } from '../../data/music';
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import * as validation from '../../data/validation'
 
 function RecommendationResults() {
     const [token, setToken] = useState('');
     const [recommendations, setRecommendations] = useState([]);
     const [error, setError] = useState(null);
+    const [genres, setGenres] = useState(null);
+    const [market, setMarket] = useState(null);
+    const [minLoudness, setMinLoudness] = useState(null);
+    const [maxLoudness, setMaxLoudness] = useState(null);
+    const [minPopularity, setMinPopularity] = useState(null);
+    const [maxPopularity, setMaxPopularity] = useState(null);
+    const [minTempo, setMinTempo] = useState(null);
+    const [maxTempo, setMaxTempo] = useState(null);
+    const [limit, setLimit] = useState(20);
+    const [artists, setArtists] = useState(null);
+    const [songs, setSongs] = useState(null);
     const [searchParams, setSearchParams] = useState({
         limit: 20, 
         seed_genres: '',
@@ -29,10 +41,116 @@ function RecommendationResults() {
     }, []);
 
     const handleChange = (e) => {
-        setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+        setSearchParams({ ...searchParams, [e.target.name]: e.target.value.trim() });
+        
+
+
+
+
+        //some of these are to prevent people from messing with the source code and getting extra values
+        if(e.target.name == "target_acousticness"){
+          if(validation.checkAcousticness(e.target.value)){
+            alert(validation.checkAcousticness(e.target.value));
+          }  
+        }
+
+        if(e.target.name == "limit"){
+          setLimit(e.target.value);
+        }
+
+        if(e.target.name == "seed_genres"){
+          setGenres(e.target.value);
+      }
+
+        if(e.target.name == "seed_artists"){
+          setArtists(e.target.value);
+        }
+
+        if(e.target.name == "seed_tracks"){
+            setSongs(e.target.value);
+        }
+
+        if(e.target.name == "market"){
+          setMarket(e.target.value);
+        }
+
+        if(e.target.name == "min_loudness"){
+          setMinLoudness(e.target.value);
+          if(validation.checkLoudness(e.target.value)){
+            alert(validation.checkLoudness(e.target.value));
+          } 
+        }
+        if(e.target.name == "max_loudness"){
+          setMaxLoudness(e.target.value);
+          if(validation.checkLoudness(e.target.value)){
+            alert(validation.checkLoudness(e.target.value));
+          } 
+        }
+
+        if(e.target.name == "min_popularity"){
+          setMinPopularity(e.target.value);
+          if(validation.checkPopularity(e.target.value)){
+            alert(validation.checkPopularity(e.target.value));
+          } 
+        }
+        if(e.target.name == "max_popularity"){
+          setMaxPopularity(e.target.value);
+          if(validation.checkPopularity(e.target.value)){
+            alert(validation.checkPopularity(e.target.value));
+          } 
+        }
+
+        if(e.target.name == "min_tempo"){
+          setMinTempo(e.target.value);
+          if(validation.checkTempo(e.target.value)){
+            alert(validation.checkTempo(e.target.value));
+          } 
+        }
+        if(e.target.name == "max_tempo"){
+          setMaxTempo(e.target.value);
+          if(validation.checkTempo(e.target.value)){
+            alert(validation.checkTempo(e.target.value));
+          } 
+        }
+
+   
     };
 
     const fetchRecommendations = async () => {
+      if(validation.checkGenres(genres)){
+        alert(validation.checkGenres(genres));
+      }
+
+      if(validation.checkMarket(market)){
+        alert(validation.checkMarket(market));
+      }
+
+      if(validation.checkArtists(artists)){
+        alert(validation.checkArtists(artists));
+      }
+
+      if(validation.checkSongs(songs)){
+        alert(validation.checkSongs(songs));
+      }
+
+      if(validation.checkLimit(limit)){
+        alert(validation.checkLimit(limit));
+      }
+
+
+      if(validation.checkLoudCross(minLoudness, maxLoudness)){
+        alert(validation.checkLoudCross(minLoudness, maxLoudness));
+      }
+
+      if(validation.checkPopCross(minPopularity, maxPopularity)){
+        alert(validation.checkPopCross(minPopularity, maxPopularity));
+      }
+
+      if(validation.checkTempoCross(minTempo, maxTempo)){
+        alert(validation.checkTempoCross(minTempo, maxTempo));
+      }
+
+        
         const query = new URLSearchParams(searchParams).toString();
         console.log(query)
         const url = `https://api.spotify.com/v1/recommendations?${query}`;
@@ -112,16 +230,15 @@ function RecommendationResults() {
                     onKeyDown={handleKeyPress}
                 />
                 
-                <Form.Label>U MUST GIVE ATLEAST ONE GENRE!!!</Form.Label>
+                <Form.Label>U MUST GIVE ATLEAST ONE GENRE, ARTIST, AND TRACK!!!</Form.Label>
               
-                <FormControl
+                <FormControl 
                     placeholder="Seed Genres (comma separated) mandatory"
                     name="seed_genres"
                     onChange={handleChange}
                     required
                 />
-               
-
+              
 
                 <FormControl
                     placeholder="Seed Artists (comma separated)"
