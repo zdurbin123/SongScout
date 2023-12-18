@@ -46,17 +46,37 @@ function checkGenres (genre) {
     
 }
 
+
+function checkArtists (artists) {
+    if (!artists) return "Artists must be provided";   
+    else{return false}
+}
+
+function checkSongs (songs) {
+    if (!songs) return "Songs must be provided";   
+    else{return false}
+}
+
 function checkLimit (limit){
+    if(Number.isNaN(limit) || limit == "") return "Limit must be a number";
     if(limit < 0 || limit > 100) return "limit must between 0 and 100";
+    else{
+        return false;
+    }
 }
 
 function checkAcousticness (value){
+    if(Number.isNaN(value) || value == "") return "Acousticness must be a number";
     if(value < 0 || value > 1) return " Acousticness must be between 0 and 1";
     else return false;
 }
 
 function checkDancability (value){
+    if(Number.isNaN(value) || value == "") return "Dancability must be a number";
     if(value < 0 || value > 1) return " Dancability must be between 0 and 1";
+    else{
+        return false;
+    }
 }
 
 function checkLiveliness (value){
@@ -67,14 +87,46 @@ function checkSpeechiness (value){
     if(value < 0 || value > 1) return " Speechiness must be between 0 and 1";
 }
 
-function checkPopularity (value, MinMax){
+function checkPopularity (value){
 
-if(value < 0) return "${} popularity must be a positive number."
-if(value > 100) return " Min popularity must be less than 100";
+   if(value < 0 || value > 100) return "popularity must be between 0 and 100";
+   else{return false;}
 }
+
+function checkTempo(value){
+
+    if(value < 0 || value > 1000) return "Tempo must be between 0 and 1000";
+    else{return false;}
+ }
 
 function checkLoudness (value){
     if(value < -60 || value > 0) return "Loudness must be between -60 and 0";
+    else{return false;}
+}
+
+function checkLoudCross (min, max){
+    console.log("ghghg");
+    console.log(min)
+    if(Number.isNaN(min) || min == "") return "Min loudness must be a number"
+    if(Number.isNaN(min) || min == "") return "Max loudness must be a number"
+    if(parseFloat(min) > parseFloat(max)) return "Min loudness cannot be greater than max loudness"
+    else{return false;}
+}
+
+function checkPopCross (min, max){
+    if(Number.isNaN(min) || min == "") return "Min popularity must be a number"
+    if(Number.isNaN(min) || min == "") return "Max popularity must be a number"
+    console.log(min - max)
+    if(parseFloat(min) > parseFloat(max)) return "Min popularity cannot be greater than max popularity"
+    else{return false;}
+}
+
+function checkTempoCross (min, max){
+    if(Number.isNaN(min) || min == "") return "Min tempo must be a number"
+    if(Number.isNaN(min) || min == "") return "Max tempo must be a number"
+    console.log(min - max)
+    if(parseFloat(min) > parseFloat(max)) return "Min tempo cannot be greater than max tempo"
+    else{return false;}
 }
 
 
@@ -87,7 +139,14 @@ export {
     checkLiveliness,
     checkSpeechiness,
     checkPopularity,
-    checkLoudness
+    checkLoudness,
+    checkTempo,
+    checkLoudCross,
+    checkPopCross,
+    checkTempoCross,
+    checkArtists,
+    checkSongs
+
 
   };
 

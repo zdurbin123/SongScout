@@ -238,6 +238,8 @@ const handleDislikeSong = async (track) => {
                         <Card.Body >
                             <Card.Title>{artist.name}</Card.Title>
                             <Card.Text>
+                                <strong>ID:</strong> {artist.id}
+                                <br />
                                 <strong>Genres:</strong> {artist.genres && artist.genres.join(', ')}
                                 <br />
                                 <strong>Followers:</strong> {artist.followers && artist.followers.total.toLocaleString()}
