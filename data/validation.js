@@ -36,14 +36,47 @@ function checkGenres (genre) {
     if (!genre) return "Genre must be provided";
     let genres = genre.split(",");
     console.log(genres);
-    for(let g in genres){
-        let newG = genres[g].toLowerCase();
+    for(let g of genres){
+        let newG = g.toLowerCase();
         console.log(newG);
         if(!(availableGenres.includes(newG))) return "Genre must be on of the available genres on Spotify.";
     }
     return false;
     
     
+}
+function validateSpotifyArtistID(id) {
+    const spotifyIDPattern = /^[0-9a-zA-Z]{22}$/;
+    return spotifyIDPattern.test(id.trim());
+}
+
+function checkArtists(artistList) {
+    if (artistList) {
+    const artists = artistList.split(",");
+    for (let artistID of artists) {
+        if (!validateSpotifyArtistID(artistID)) {
+            return "Invalid Spotify artist ID/IDs detected.";
+        }
+    }
+    }
+    return false; 
+}
+
+function validateSpotifyTrackID(id) {
+    const spotifyIDPattern = /^[0-9a-zA-Z]{22}$/;
+    return spotifyIDPattern.test(id.trim());
+}
+
+function checkTracks(trackList) {
+    if (trackList) {
+    const tracks = trackList.split(",");
+    for (let trackID of tracks) {
+        if (!validateSpotifyTrackID(trackID)) {
+            return "Invalid Spotify track ID/IDs detected.";
+        }
+    }
+    }
+    return false; 
 }
 
 function checkLimit (limit){
@@ -133,6 +166,8 @@ export {
     checkLoudCross,
     checkPopCross,
     checkTempoCross,
+    checkArtists,
+    checkTracks
    
 
 

@@ -128,6 +128,15 @@ function RecommendationResults() {
         alert(validation.checkMarket(market));
         isValid = false;
       }
+      if(validation.checkArtists(artists)){
+        alert(validation.checkArtists(artists));
+        isValid = false;
+      }
+      if(validation.checkTracks(songs)){
+        alert(validation.checkTracks(songs));
+        isValid = false;
+      }
+
 
       if(validation.checkLimit(limit)){
         alert(validation.checkLimit(limit));
@@ -154,6 +163,7 @@ function RecommendationResults() {
         const query = new URLSearchParams(searchParams).toString();
         console.log(query)
         const url = `https://api.spotify.com/v1/recommendations?${query}`;
+        console.log(url)
 
         try {
             const response = await axios.get(url, {
@@ -296,21 +306,21 @@ function RecommendationResults() {
 
                 {/* Used sliders  */}
                 <Form.Group controlId="formAcousticness">
-                    <Form.Label>Acousticness (0-1)</Form.Label>
+                    <Form.Label>Acousticness (0 to 1)</Form.Label>
                     <Form.Control type="range" min="0" max="1" step="0.01" name="target_acousticness" onChange={handleChange} />
                 </Form.Group>
 
                 <Form.Group controlId="formDanceability">
-                    <Form.Label>Danceability (0-1)</Form.Label>
+                    <Form.Label>Danceability (0 to 1)</Form.Label>
                     <Form.Control type="range" min="0" max="1" step="0.01" name="target_danceability" onChange={handleChange} />
                 </Form.Group>
                 <Form.Group controlId="formValence">
-                    <Form.Label>Valence (0-1)</Form.Label>
+                    <Form.Label>Valence (0 to 1)</Form.Label>
                     <Form.Control type="range" min="0" max="1" step="0.01" name="target_valence" onChange={handleChange} />
                 </Form.Group>
 
                 <Form.Group controlId="formTempo">
-                    <Form.Label>Tempo (BPM)</Form.Label>
+                    <Form.Label>Tempo (BPM) (0 to 1000)</Form.Label>
                     <InputGroup>
                         <FormControl type="number" placeholder="Min Tempo" name="min_tempo" onChange={handleChange} />
                         <FormControl type="number" placeholder="Max Tempo" name="max_tempo" onChange={handleChange} />
@@ -318,17 +328,17 @@ function RecommendationResults() {
                 </Form.Group>
 
                 <Form.Group controlId="formSpeechiness">
-                    <Form.Label>Speechiness (0-1)</Form.Label>
+                    <Form.Label>Speechiness (0 to 1)</Form.Label>
                     <Form.Control type="range" min="0" max="1" step="0.01" name="target_speechiness" onChange={handleChange} />
                 </Form.Group>
 
                 <Form.Group controlId="formLiveness">
-                    <Form.Label>Liveness (0-1)</Form.Label>
+                    <Form.Label>Liveness (0 to 1)</Form.Label>
                     <Form.Control type="range" min="0" max="1" step="0.01" name="target_liveness" onChange={handleChange} />
                 </Form.Group>
 
                 <Form.Group controlId="formLoudness">
-                    <Form.Label>Loudness (dB)</Form.Label>
+                    <Form.Label>Loudness (dB) (-60 to 0)</Form.Label>
                     <InputGroup>
                         <FormControl type="number" placeholder="Min Loudness" name="min_loudness" onChange={handleChange} />
                         <FormControl type="number" placeholder="Max Loudness" name="max_loudness" onChange={handleChange} />
@@ -336,7 +346,7 @@ function RecommendationResults() {
                 </Form.Group>
 
                 <Form.Group controlId="formPopularity">
-                    <Form.Label>Popularity (0-100)</Form.Label>
+                    <Form.Label>Popularity (0 to 100)</Form.Label>
                     <InputGroup>
                         <FormControl type="number" placeholder="Min Popularity" name="min_popularity" onChange={handleChange} min="0" max="100" />
                         <FormControl type="number" placeholder="Max Popularity" name="max_popularity" onChange={handleChange} min="0" max="100" />
@@ -352,6 +362,7 @@ function RecommendationResults() {
             {error && <p>{error}</p>} 
          
             <Row  lg={4} className="g-4">
+            {!error&&recommendations.length===0&& <p>Oops!!! You've caught us, No Recommendations for the given field/fields</p>}
             {!error&&recommendations&&recommendations.map((track, index) => (
             <Col key={index} md={6} lg={3}>
                           
