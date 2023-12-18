@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, Row, Container,Col } from 'react-bootstrap';
+import { Button, Card, Row, Container,Col} from 'react-bootstrap';
 import { likeSong, dislikeSong,getLikedSongsSortedByLikes } from '../../data/music';
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
@@ -17,14 +17,20 @@ Error Handling: If any promise within the array rejects, Promise.all immediately
 function Trending() {
     const [token, setToken] = useState('');
     const [trendingSongs, setTrendingSongs] = useState([]);
+    const [error, setError] = useState('');
     const { currentUser } = useContext(AuthContext);
     const { likedSongs, dislikedSongs, handleLike, handleDislike } = useContext(LikesContext);
 
     useEffect(() => {
     async function to() {
+        try{
         const {data} = await axios.get('http://localhost:3000')
         console.log(data)
-        setToken(data.access_token); 
+        setToken(data.access_token); }
+        catch (error) {
+            console.error('Error fetching token:', error);
+            setError('Failed to fetch authentication token.');
+        }
     }
 
     to();
@@ -49,6 +55,7 @@ function Trending() {
             setTrendingSongs(songDetails);
         } catch (error) {
             console.error('Error fetching trending songs:', error);
+            setError('Failed to load trending songs!!! Please try again later.');
         }
     }
 
@@ -121,13 +128,14 @@ const handleDislikeSong = async (track) => {
 //   SongInfo()
 // },[token])
 
-if (trendingSongs.length === 0) {
+if (trendingSongs.length === 0 && !error) {
   return <div>Loading trending songs...</div>;
 }
 
 
     return (
     <div>
+        {error && <div style={{ color: 'red', textAlign: 'center' }}>{error}</div>}
                <Container >
                <Row  lg={4} className="g-4">
                {trendingSongs.map((song, index) => (
