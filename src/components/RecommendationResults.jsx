@@ -165,7 +165,10 @@ function RecommendationResults() {
             setRecommendations(response.data.tracks);
             console.log(response.data.tracks)
         } catch (error) {
-          setError('Error fetching recommendations');
+          console.log(error.response)
+          const errorMessage = `Error fetching recommendations: ${error.response.data.error.message} with status code: ${error.response.data.error.status}`;
+        setError(errorMessage);
+          
         }
       }
     };
