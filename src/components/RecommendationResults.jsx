@@ -26,7 +26,7 @@ function RecommendationResults() {
     const [searchParams, setSearchParams] = useState({
         limit: 20, 
         seed_genres: '',
-        // gotta add
+        
     });
     const { currentUser } = useContext(AuthContext);
     const { likedSongs, dislikedSongs, handleLike, handleDislike } = useContext(LikesContext);
@@ -118,40 +118,39 @@ function RecommendationResults() {
 
     const fetchRecommendations = async () => {
       setError(null);
+      let isValid = true;
       if(validation.checkGenres(genres)){
         alert(validation.checkGenres(genres));
+        isValid = false;
       }
 
       if(validation.checkMarket(market)){
         alert(validation.checkMarket(market));
+        isValid = false;
       }
-
-      // if(validation.checkArtists(artists)){
-      //   alert(validation.checkArtists(artists));
-      // }
-
-      // if(validation.checkSongs(songs)){
-      //   alert(validation.checkSongs(songs));
-      // }
 
       if(validation.checkLimit(limit)){
         alert(validation.checkLimit(limit));
+        isValid = false;
       }
 
 
       if(validation.checkLoudCross(minLoudness, maxLoudness)){
         alert(validation.checkLoudCross(minLoudness, maxLoudness));
+        isValid = false;
       }
 
       if(validation.checkPopCross(minPopularity, maxPopularity)){
         alert(validation.checkPopCross(minPopularity, maxPopularity));
+        isValid = false;
       }
 
       if(validation.checkTempoCross(minTempo, maxTempo)){
         alert(validation.checkTempoCross(minTempo, maxTempo));
+        isValid = false;
       }
-
-        
+     console.log(isValid)
+      if (isValid){
         const query = new URLSearchParams(searchParams).toString();
         console.log(query)
         const url = `https://api.spotify.com/v1/recommendations?${query}`;
@@ -168,6 +167,7 @@ function RecommendationResults() {
         } catch (error) {
           setError('Error fetching recommendations');
         }
+      }
     };
     const handleKeyPress = (event) => {
       if (event.key === 'Enter') {
@@ -224,33 +224,64 @@ function RecommendationResults() {
             <Form className="mb-4">
                 <Row lg={4} className="g-4" >
                     
-                <FormControl
-                    placeholder="Market (e.g. US)"
-                    name="market"
-                    onChange={handleChange}
-                    onKeyDown={handleKeyPress}
-                />
-                
-                <Form.Label>U MUST GIVE ATLEAST ONE GENRE, ARTIST, AND TRACK!!!</Form.Label>
-              
-                <FormControl 
-                    placeholder="Seed Genres (comma separated) mandatory"
-                    name="seed_genres"
-                    onChange={handleChange}
-                    required
-                />
+                <Col md={6}>
+                    <Form.Group>
+                        <Form.Label>Market</Form.Label>
+                        <FormControl
+                            placeholder="Enter Market Code (e.g., US)"
+                            name="market"
+                            onChange={handleChange}
+                            onKeyDown={handleKeyPress}
+                        />
+                        <Form.Text className="text-muted">
+                            Enter an ISO 3166-1 alpha-2 country code.
+                        </Form.Text>
+                    </Form.Group>
+                </Col>
+
+                <Col md={6}>
+                    <Form.Group>
+                        <Form.Label>Seed Genres</Form.Label>
+                        <FormControl 
+                            placeholder="Enter Genres (comma-separated)"
+                            name="seed_genres"
+                            onChange={handleChange}
+                            required
+                        />
+                        <Form.Text className="text-muted">
+                            Provide at least one genre, separated by commas.
+                        </Form.Text>
+                    </Form.Group>
+                </Col>
               
 
-                <FormControl
-                    placeholder="Seed Artists (comma separated)"
-                    name="seed_artists"
-                    onChange={handleChange}
-                />
-                <FormControl
-                    placeholder="Seed Tracks (comma separated)"
-                    name="seed_tracks"
-                    onChange={handleChange}
-                />
+                <Col md={6}>
+        <Form.Group>
+            <Form.Label>Seed Artists</Form.Label>
+            <FormControl
+                placeholder="Enter Artists (comma-separated)"
+                name="seed_artists"
+                onChange={handleChange}
+            />
+            <Form.Text className="text-muted">
+                List of artist IDs, separated by commas.
+            </Form.Text>
+        </Form.Group>
+    </Col>
+
+    <Col md={6}>
+        <Form.Group>
+            <Form.Label>Seed Tracks</Form.Label>
+            <FormControl
+                placeholder="Enter Tracks (comma-separated)"
+                name="seed_tracks"
+                onChange={handleChange}
+            />
+            <Form.Text className="text-muted">
+                List of track IDs, separated by commas.
+            </Form.Text>
+        </Form.Group>
+    </Col>
                 <FormControl
                     type="number"
                     placeholder="Limit (1-100)"
@@ -318,7 +349,7 @@ function RecommendationResults() {
             {error && <p>{error}</p>} 
          
             <Row  lg={4} className="g-4">
-            {recommendations&&recommendations.map((track, index) => (
+            {!error&&recommendations&&recommendations.map((track, index) => (
             <Col key={index} md={6} lg={3}>
                           
                         <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
@@ -328,6 +359,9 @@ function RecommendationResults() {
                                 <Card.Title>{track.name}</Card.Title>
                                 <Card.Text>
                                     Artist: {track.artists.map(artist => artist.name).join(', ')}
+                                </Card.Text>
+                                <Card.Text>
+                                   ID: {track.id}     
                                 </Card.Text>
                                 </Card.Body>
                                 </Link>

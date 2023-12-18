@@ -46,17 +46,6 @@ function checkGenres (genre) {
     
 }
 
-
-// function checkArtists (artists) {
-//     if (!artists) return "Artists must be provided";   
-//     else{return false}
-// }
-
-// function checkSongs (songs) {
-//     if (!songs) return "Songs must be provided";   
-//     else{return false}
-// }
-
 function checkLimit (limit){
     if(limit&&(Number.isNaN(limit) || limit == ""))return "Limit must be a number";
     if(limit < 0 || limit > 100) return "limit must between 0 and 100";
@@ -143,8 +132,8 @@ export {
     checkTempo,
     checkLoudCross,
     checkPopCross,
-    checkTempoCross
-    
+    checkTempoCross,
+   
 
 
   };
