@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Button, Card, Row,Col, Container, InputGroup, FormControl } from 'react-bootstrap';
+import { Button, Card, Row,Col, Container, InputGroup, FormControl,Alert } from 'react-bootstrap';
 import { likeSong, dislikeSong } from '../../data/music';
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
@@ -11,21 +11,33 @@ function Display() {
     const [searchTerm, setsearchTerm] = useState('');
     const [token, setToken] = useState('');
     const [tracks, setTracks] = useState([]);
+    const [error, setError] = useState('');
     const { currentUser } = useContext(AuthContext);
     const { likedSongs, dislikedSongs, handleLike, handleDislike } = useContext(LikesContext);
 
     useEffect(() => {
-    async function to() {
-        const {data} = await axios.get('http://localhost:3000')
-        console.log(data)
-        setToken(data.access_token); 
-    }
-
-    to();
-  }, []);
+        async function to() {
+          try{
+            const {data} = await axios.get('http://localhost:3000')
+            console.log(data)
+            setToken(data.access_token); }
+            catch (error) {
+              console.error('Error fetching token:', error);
+              setError('Failed to fetch authentication token.');
+          }
+        }
+        
+    
+        to();
+      }, []);
 
   async function querySearch(){
     console.log("hi")
+    if (!searchTerm) {
+        setError('Please enter a search term.');
+        return;
+    }
+    setError('');// it is used for clearing existing errors
     const parameters = {
         headers:{
           'Content-Type': 'application/json',
@@ -36,8 +48,12 @@ function Display() {
       const { data } = await axios.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchTerm)}&type=track`, parameters);
       setTracks(data.tracks.items)
       console.log(data.tracks.items);
+      if (data.tracks.items.length === 0) {
+        setError('No tracks found.');
+    }
   } catch (error) {
       console.error('Error from Spotify:', error);
+      setError('Failed to fetch tracks!!! Please try again later.');
   }
   }
   const handleKeyPress = (event) => {
@@ -106,6 +122,7 @@ const handleDislikeSong = async (track) => {
     
         <Button onClick={()=>{querySearch()}}variant="primary">Search</Button>
          </InputGroup>
+         {error && <Alert variant="danger">{error}</Alert>}
          </Container>
          <Container>
          <Row  lg={4} className="g-4">

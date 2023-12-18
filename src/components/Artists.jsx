@@ -1,26 +1,38 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import {Button,Card,Row,Col,Container,InputGroup,FormControl} from 'react-bootstrap';
+import {Button,Card,Row,Col,Container,InputGroup,FormControl,Alert } from 'react-bootstrap';
 
 
-function Display() {
+function Artists() {
     const[searchTerm,setsearchTerm]=useState('');
     const [token, setToken] = useState('');
     const [artists, setArtists] = useState([]);
+    const [error, setError] = useState('');
 
     useEffect(() => {
     async function to() {
+      try{
         const {data} = await axios.get('http://localhost:3000')
         console.log(data)
-        setToken(data.access_token); 
+        setToken(data.access_token); }
+        catch (error) {
+          console.error('Error fetching token:', error);
+          setError('Failed to fetch authentication token.');
+      }
     }
+    
 
     to();
   }, []);
   
 
   async function querySearch(){
+    if (!searchTerm) {
+      setError('Please enter a search term.');
+      return;
+  }
+  setError(''); // it is used for clearing existing errors
     console.log("hi")
     const parameters = {
         headers:{
@@ -32,8 +44,12 @@ function Display() {
       const { data } = await axios.get(`https://api.spotify.com/v1/search?q=${encodeURIComponent(searchTerm)}&type=artist`, parameters);
       setArtists(data.artists.items)
       console.log(data.artists.items);
+      if (data.artists.items.length === 0) {
+        setError('No artists found.');
+    }
   } catch (error) {
       console.error('Error from Spotify:', error);
+      setError('Failed to fetch artists!!! Please try again later.');
   }
   }
   const handleKeyPress = (event) => {
@@ -57,6 +73,7 @@ function Display() {
     
         <Button onClick={()=>{querySearch()}}variant="primary">Search</Button>
          </InputGroup>
+         {error && <Alert variant="danger">{error}</Alert>}
          </Container>
          
 
@@ -91,4 +108,4 @@ function Display() {
 
 };
 
-export default Display;
+export default Artists;
