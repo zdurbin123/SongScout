@@ -6,11 +6,13 @@ import { likeSong, dislikeSong } from '../../data/music';
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import * as validation from '../../data/validation'
 
 function RecommendationResults() {
     const [token, setToken] = useState('');
     const [recommendations, setRecommendations] = useState([]);
     const [error, setError] = useState(null);
+    const [genres, setGenres] = useState(null);
     const [searchParams, setSearchParams] = useState({
         limit: 20, 
         seed_genres: '',
@@ -30,9 +32,35 @@ function RecommendationResults() {
 
     const handleChange = (e) => {
         setSearchParams({ ...searchParams, [e.target.name]: e.target.value });
+        
+
+
+        //some of these are to prevent people from messing with the source code and getting extra values
+        if(e.target.name == "target_acousticness"){
+          if(validation.checkAcousticness(e.target.value)){
+            alert(validation.checkAcousticness(e.target.value));
+          }  
+        }
+
+        if(e.target.name == "seed_genres"){
+            setGenres(e.target.value);
+            console.log(genres);
+        }
+
+
+
+
+        
     };
 
     const fetchRecommendations = async () => {
+      if(validation.checkGenres(genres)){
+        alert(validation.checkGenres(genres));
+      }
+      else{
+        
+      }
+        
         const query = new URLSearchParams(searchParams).toString();
         console.log(query)
         const url = `https://api.spotify.com/v1/recommendations?${query}`;
@@ -52,6 +80,12 @@ function RecommendationResults() {
     };
     const handleKeyPress = (event) => {
       if (event.key === 'Enter') {
+        if(event.target.name == "market"){
+          console.log(event.target.value);
+          if(validation.checkMarket(event.target.value)){
+            alert(validation.checkMarket(event.target.value));
+          }  
+        }
         querySearch();
       }
     };
@@ -114,14 +148,13 @@ function RecommendationResults() {
                 
                 <Form.Label>U MUST GIVE ATLEAST ONE GENRE!!!</Form.Label>
               
-                <FormControl
+                <FormControl 
                     placeholder="Seed Genres (comma separated) mandatory"
                     name="seed_genres"
                     onChange={handleChange}
                     required
                 />
-               
-
+              
 
                 <FormControl
                     placeholder="Seed Artists (comma separated)"
