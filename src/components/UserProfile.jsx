@@ -5,6 +5,8 @@ import { getUserProfileById, updateUserProfile } from '../../data/userprofile';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
+import { Alert, Form, Card, Button } from 'react-bootstrap';
+
 
 function UserProfile() {
   const { currentUser } = useContext(AuthContext);
@@ -16,6 +18,8 @@ function UserProfile() {
   const [imageExists, setImageExists] = useState(true);
   const imagePath = "../../images/" + currentUser.uid + ".jpg"; // Use currentUser.photoURL as imagePath
   const [bannerImagePath, setBannerImagePath] = useState('');
+  const [error, setError] = useState('');
+
   useEffect(() => {
     const fetchUserProfile = async () => {
         try {
@@ -39,6 +43,7 @@ function UserProfile() {
           }
         } catch (error) {
           console.error('Error fetching user profile:', error);
+          setError('Failed to load user profile!!! Please try again later.');
         }
       };
 
@@ -117,6 +122,8 @@ function UserProfile() {
 
     return (
     <div className="container mt-4">
+      {error && <Alert variant="danger">{error}</Alert>}
+      
       <div className="row">
         <div className="col-md-4">
           <img
