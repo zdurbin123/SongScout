@@ -21,7 +21,13 @@ function SignUp() {
         displayName.value
       );
     } catch (error) {
-      alert(error);
+      if (error == 'FirebaseError: [code=unknown]: Request failed with error: undefined'){
+        throw error
+      }else if (error == 'FirebaseError: Firebase: Error (auth/network-request-failed).'){
+        throw error
+      }else{
+        alert(error);
+      }
     }
   };
 
