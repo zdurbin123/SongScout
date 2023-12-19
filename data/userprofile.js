@@ -14,9 +14,11 @@ import {
   import { getAuth, updateProfile } from 'firebase/auth';
   import { initializeApp } from "firebase/app";
   import FirebaseConfig from '../src/firebase/FirebaseConfig'
+  import { getStorage, ref, listAll, getDownloadURL } from 'firebase/storage';
   
   const firebaseApp = initializeApp(FirebaseConfig);
   const db = getFirestore(firebaseApp);
+  const storage = getStorage();
   async function getUserProfileById(Uid) {
     try {
       const userDocRef = doc(db, "users", Uid);
@@ -93,8 +95,31 @@ import {
     }
   }
 
+  const getFileUrlByName = async (fileName) => {
+    try {
+      const files = await listAll(ref(storage, 'images'));
+  
+      const targetFile = files.items.find((file) => file.name === fileName);
+  
+      if (targetFile) {
+        const fileUrl = await getDownloadURL(targetFile);
+        console.log('File URL:', fileUrl);
+  
+        return fileUrl;
+      } else {
+        console.log('File not found');
+        return null;
+      }
+    } catch (error) {
+      console.error('Error retrieving file URL:', error);
+      return null;
+    }
+  };
+  
+
   export {
     getUserProfileById,
     createUserProfile,
-    updateUserProfile
+    updateUserProfile,
+    getFileUrlByName
   }

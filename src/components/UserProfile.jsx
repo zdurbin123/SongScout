@@ -1,7 +1,7 @@
 import React, { useContext, useState, useEffect } from 'react';
 import axios from 'axios';
 import { AuthContext } from '../context/AuthContext';
-import { getUserProfileById, updateUserProfile } from '../../data/userprofile';
+import { getUserProfileById, updateUserProfile,getFileUrlByName } from '../../data/userprofile';
 import '../App.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
@@ -16,14 +16,16 @@ function UserProfile() {
   const [fontColor, setFontColor] = useState('white');
   const [bannerImage, setBannerImage] = useState(null);
   const [imageExists, setImageExists] = useState(true);
-  const imagePath = "../../images/" + currentUser.uid + ".jpg"; // Use currentUser.photoURL as imagePath
+  const [userImagePath, setuserImagePath] = useState('');
   const [bannerImagePath, setBannerImagePath] = useState('');
   const [error, setError] = useState('');
 
   useEffect(() => {
     const fetchUserProfile = async () => {
         try {
-          let path = `../../images/${currentUser.uid}_banner.jpg`;
+          const userImagePath = await getFileUrlByName(`${currentUser.uid}.jpg`);
+          const bannerImagePath = await getFileUrlByName(`${currentUser.uid}_banner.jpg`);
+          let path = await getFileUrlByName(`${currentUser.uid}_banner.jpg`);
           const userProfileData = await getUserProfileById(currentUser.uid);
           const cachedProfile = await axios.get(`http://localhost:3000/api/getCachedProfile/${currentUser.uid}`);
           if (userProfileData.profileBanner === '') {
@@ -34,6 +36,8 @@ function UserProfile() {
             await axios.post(`http://localhost:3000/api/setCachedProfile/${currentUser.uid}`, userProfileData);
           }
           setBannerImagePath(path);
+          console.log(path)
+          setuserImagePath(userImagePath);
           setUserProfile(userProfileData);
           if (userProfileData && userProfileData.backgroundColor) {
             setBackgroundColor(userProfileData.backgroundColor);
@@ -82,7 +86,7 @@ function UserProfile() {
               'Content-Type': 'multipart/form-data',
             },
           });
-          updatedBannerImagePath = `../../images/${currentUser.uid}_banner.jpg`;
+          updatedBannerImagePath = await getFileUrlByName('${currentUser.uid}_banner.jpg');
         } else {
           if(!currentUser.uid){
             console.error('Error: currentUser.uid is undefined');
@@ -127,7 +131,7 @@ function UserProfile() {
       <div className="row">
         <div className="col-md-4">
           <img
-            src={imagePath}
+            src={userImagePath}
             alt="My Image"
             className="img-fluid rounded border"
           />
