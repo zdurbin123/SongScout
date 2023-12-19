@@ -9,6 +9,12 @@ import fs from 'fs';
 import { fileURLToPath } from 'url';
 import { dirname } from 'path';
 import redis from 'redis'; // Import the Redis client
+import { initializeApp } from "firebase/app";
+import FirebaseConfig from './src/firebase/FirebaseConfig.js';
+import { getStorage,ref, uploadString,getDownloadURL } from 'firebase/storage';
+
+const firebaseApp = initializeApp(FirebaseConfig);
+const Storage = getStorage(firebaseApp);
 
 const client = redis.createClient();
 client.connect().then(() => {});
@@ -47,59 +53,57 @@ app.get('/', async (req, res) => {
   }
 });
 
-app.post('/api/generateImage', (req, res) => {
-  const { name, uid, backgroundColor,fontColor} = req.body;
-  const outputImagePath = `./images/${uid}.jpg`;
+
+const storageRef = ref(Storage, 'images');
+console.log(storageRef);
+
+app.post('/api/generateImage', async (req, res) => {
+  const { name, uid, backgroundColor, fontColor } = req.body;
   const fontSize = 400;
-  let xc = 'xc:'+backgroundColor.toString()
+  let xc = 'xc:' + backgroundColor.toString();
 
-  convert([
-    '-size', '400x400',
-    xc.toString() ,
-    '-fill', fontColor.toString(),
-    '-gravity', 'center',
-    '-pointsize', fontSize.toString(),
-    `-draw`, `text 0,0 "${name}"`,
-    outputImagePath
-  ], (err, stdout, stderr) => {
-    if (err) {
-      console.error('Error creating image with text:', err);
-      console.error('stderr:', stderr);
-      res.status(500).json({ success: false, error: 'Image processing error' });
-    } else {
-      console.log(`Image for ${name} with UID ${uid} generated successfully at ${outputImagePath}`);
-      res.status(200).json({ success: true, imagePath: outputImagePath });
-    }
+  const textImageBuffer = await new Promise((resolve, reject) => {
+    convert([
+      '-size', '400x400',
+      xc.toString(),
+      '-fill', fontColor.toString(),
+      '-gravity', 'center',
+      '-pointsize', fontSize.toString(),
+      `-draw`, `text 0,0 "${name}"`,
+      'jpg:-' // Output as a buffer
+    ], (err, stdout, stderr) => {
+      if (err) {
+        reject(err);
+      } else {
+        resolve(Buffer.from(stdout, 'binary'));
+      }
+    });
   });
+
+  const textImageRef = ref(storageRef, `${uid}.jpg`);
+
+  await uploadString(textImageRef, textImageBuffer.toString('base64'), 'base64', { contentType: 'image/jpeg' });
+
+  const imageUrl = await getDownloadURL(textImageRef);
+
+  res.status(200).json({ success: true, imageUrl });
 });
 
-const storage = multer.diskStorage({
-  destination: (req, file, cb) => {
-    const uploadPath = path.join(__dirname, 'images');
-    fs.mkdirSync(uploadPath, { recursive: true });
+const upload = multer({ storage: multer.memoryStorage() });
 
-
-    cb(null, uploadPath);
-  },
-  filename: (req, file, cb) => {
-    const uid = req.body.uid || req.query.uid || 'default'; 
-    const fileName = `${uid}_banner${path.extname(file.originalname)}`;
-    cb(null, fileName);
-  },
-});
-
-const upload = multer({ storage: storage });
-
-app.post('/api/uploadBanner', upload.single('image'), (req, res) => {
-
+app.post('/api/uploadBanner', upload.single('image'), async (req, res) => {
   try {
     const uploadedFile = req.file;
 
-    const newFileName = req.body.uid+"_banner"+'.jpg'; 
+    const uid = req.body.uid || req.query.uid || 'default';
+    const bannerImageRef = ref(storageRef, `${uid}_banner.jpg`);
 
-    fs.renameSync(uploadedFile.path, path.join(__dirname, 'images', newFileName));
+    await uploadString(bannerImageRef, uploadedFile.buffer.toString('base64'), 'base64', { contentType: 'image/jpeg' });
 
-    res.status(200).json({ success: true, message: 'File uploaded successfully!' });
+    const imageUrl = await getDownloadURL(bannerImageRef);
+    console.log(imageUrl);
+
+    res.status(200).json({ success: true, message: 'File uploaded successfully!', imageUrl });
   } catch (error) {
     console.error('Error uploading file:', error);
     res.status(500).json({ success: false, error: 'File upload failed.' });
