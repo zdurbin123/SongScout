@@ -46,7 +46,7 @@ function UserProfile() {
             setFontColor(userProfileData.fontColor);
           }
         } catch (error) {
-          console.error('Error fetching user profile:', error);
+          console.log('Error fetching user profile:', error);
           setError('Failed to load user profile!!! Please try again later.');
         }
       };
@@ -168,6 +168,8 @@ function UserProfile() {
           </div>
           <p>Username: {userProfile?.username}</p>
           <Link to="/likedsongs">Liked Songs</Link>
+          <br/>
+          <Link to="/dislikedsongs">Disliked Songs</Link>
           <div className="form-group mt-2">
             <label>New Username:</label>
             <input

@@ -16,6 +16,7 @@ import { AuthProvider } from '../context/AuthContext';
 import PrivateRoute from './PrivateRoute';
 import RecommendationResults from './RecommendationResults';
 import LikedSongs from './LikedSongs';
+import DislikedSongs from './DislikedSongs';
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
               <Route path='/Trending' element={<Trending />} />
               <Route path='/account' element={<Account />} />
               <Route path='/likedsongs' element={<LikedSongs />} />
+              <Route path='/dislikedsongs' element={<DislikedSongs />} />
               <Route path='/RecommedResults' element={<RecommendationResults />} />
             </Route>
           </Routes>
