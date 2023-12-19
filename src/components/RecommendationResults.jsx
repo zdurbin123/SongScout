@@ -11,6 +11,7 @@ import * as validation from '../../data/validation'
 function RecommendationResults() {
     const [token, setToken] = useState('');
     const [recommendations, setRecommendations] = useState([]);
+    const [hasFetched, setHasFetched] = useState(false);
     const [error, setError] = useState(null);
     const [genres, setGenres] = useState(null);
     const [market, setMarket] = useState(null);
@@ -180,6 +181,9 @@ function RecommendationResults() {
         setError(errorMessage);
           
         }
+        finally {
+          setHasFetched(true); 
+      }
       }
     };
     const handleKeyPress = (event) => {
@@ -360,9 +364,9 @@ function RecommendationResults() {
          
               
             {error && <p>{error}</p>} 
-         
+            {!error&& hasFetched&&recommendations.length===0&& <p>Oops!!! You've caught us, No Recommendations for the given field/fields</p>}
             <Row  lg={4} className="g-4">
-            {!error&&recommendations.length===0&& <p>Oops!!! You've caught us, No Recommendations for the given field/fields</p>}
+            
             {!error&&recommendations&&recommendations.map((track, index) => (
             <Col key={index} md={6} lg={3}>
                           
