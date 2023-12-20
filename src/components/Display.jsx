@@ -14,7 +14,7 @@ function Display() {
     const [error, setError] = useState('');
     const { currentUser } = useContext(AuthContext);
     const { likedSongs, dislikedSongs, handleLike, handleDislike } = useContext(LikesContext);
-
+    const MAX_SEARCH_TERM_LENGTH = 200;
     useEffect(() => {
         async function to() {
           try{
@@ -35,6 +35,10 @@ function Display() {
     console.log("hi")
     if (!searchTerm) {
         setError('Please enter a search term.');
+        return;
+    }
+    if (searchTerm.length > MAX_SEARCH_TERM_LENGTH) {
+        setError(`Search term is too long. Please limit it to ${MAX_SEARCH_TERM_LENGTH} characters.`);
         return;
     }
     setError('');// it is used for clearing existing errors

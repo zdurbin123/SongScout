@@ -9,6 +9,7 @@ function Artists() {
     const [token, setToken] = useState('');
     const [artists, setArtists] = useState([]);
     const [error, setError] = useState('');
+    const MAX_SEARCH_TERM_LENGTH = 40;
 
     useEffect(() => {
     async function to() {
@@ -32,6 +33,10 @@ function Artists() {
       setError('Please enter a search term.');
       return;
   }
+  if (searchTerm.length > MAX_SEARCH_TERM_LENGTH) {
+    setError(`Search term is too long. Please limit it to ${MAX_SEARCH_TERM_LENGTH} characters.`);
+    return;
+}
   setError(''); // it is used for clearing existing errors
     console.log("hi")
     const parameters = {
