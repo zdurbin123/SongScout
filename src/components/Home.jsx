@@ -4,11 +4,6 @@ import '../App.css';
 
 function Home() {
   const {currentUser} = useContext(AuthContext);
-  useEffect(() => {
-    if (!currentUser?.displayName) {
-      window.location.reload();
-    }
-  }, [currentUser]);
   return (
     <div className='card'>
       <h2>
