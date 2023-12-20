@@ -16,35 +16,35 @@ const NavigationAuth = () => {
         <li>
           <NavLink to='/'>Landing</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <NavLink to='/home'>Home</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <NavLink to='/Trending'>Trending</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <NavLink to='/RecommedResults'>Recommendations</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <NavLink to='/Display'>Tracks</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <NavLink to='/Artists'>Artists</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <NavLink to='/account'>Account</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <NavLink to='/MySongs'>MySongs</NavLink>
         </li>
-        <br/><br/>
+ 
         <li>
           <SignOutButton />
         </li>
