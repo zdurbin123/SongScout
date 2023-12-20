@@ -18,7 +18,7 @@ import RecommendationResults from './RecommendationResults';
 import LikedSongs from './LikedSongs';
 import DislikedSongs from './DislikedSongs';
 import ErrorNotFound from './ErrorNotFound';
-import MySongs from './mySongs';
+import MySongs from './MySongs';
 function App() {
   return (
     <AuthProvider>
@@ -43,7 +43,7 @@ function App() {
               <Route path='/likedsongs' element={<LikedSongs />} />
               <Route path='/dislikedsongs' element={<DislikedSongs />} />
               <Route path='/RecommedResults' element={<RecommendationResults />} />
-              <Route path='/mySongs' element={<MySongs />} />
+              <Route path='/MySongs' element={<MySongs />} />
               <Route path='*' element={<ErrorNotFound />} />
             </Route>
           </Routes>
