@@ -174,12 +174,18 @@ function UserProfile() {
             <label>New Username:</label>
             <input
               type="text"
-              className={`form-control ${newUsername && !/[a-zA-Z]/.test(newUsername) ? 'is-invalid' : ''}`}
+              className={`form-control ${newUsername && (!/^(?=.*[a-zA-Z]).{1,10}$/.test(newUsername) ? 'is-invalid' : '')}`}
               value={newUsername}
-              onChange={(e) => setNewUsername(e.target.value)}
+              onChange={(e) => {
+                const inputUsername = e.target.value;
+                if (inputUsername.length <= 10) {
+                  setNewUsername(inputUsername);
+                }
+              }}
             />
-            {newUsername && !/[a-zA-Z]/.test(newUsername) && (
-              <div className="invalid-feedback">Username must contain at least one letter</div>
+
+            {newUsername && !/^(?=.*[a-zA-Z]).{1,10}$/.test(newUsername) && (
+              <div className="invalid-feedback">Username must contain at least one letter and be at most 10 characters long</div>
             )}
           </div>
           <button

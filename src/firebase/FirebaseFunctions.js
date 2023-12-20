@@ -16,24 +16,38 @@ import {createUserProfile,getUserProfileById} from '../../data/userprofile';
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   const auth = getAuth();
-  await createUserWithEmailAndPassword(auth, email, password);
-  await updateProfile(auth.currentUser, {displayName: displayName});
-  await createUserProfile(displayName,email,auth.currentUser.uid);
-  let firstEnglishCharacter = '';
-  for (let i = 0; i < displayName.length; i++) {
-    const char = displayName.charAt(i);
-      if (/[a-zA-Z]/.test(char)) {
-        firstEnglishCharacter = char;
-        break; 
-      }
+  try{
+    let filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!filter.test(email)) {
+            throw 'Please provide a valid email address';
+        }
+    if (!(password.length >= 6 && !/\s/.test(password))) {
+      throw 'invalid password';
     }
-  const result = firstEnglishCharacter || '$';
-  await axios.post('http://localhost:3000/api/generateImage', {
-    name: result.toUpperCase(),
-    uid: auth.currentUser.uid,
-    backgroundColor: 'black',
-    fontColor: 'white'
-  });
+    if (!(/^[a-zA-Z]+$/.test(displayName) && displayName.length <= 10)) {
+      throw 'invalid disPlayName should be Under 10 and at least one letter with no space';
+    }
+    await createUserWithEmailAndPassword(auth, email, password);
+    await updateProfile(auth.currentUser, {displayName: displayName});
+    await createUserProfile(displayName,email,auth.currentUser.uid);
+    let firstEnglishCharacter = '';
+    for (let i = 0; i < displayName.length; i++) {
+      const char = displayName.charAt(i);
+        if (/[a-zA-Z]/.test(char)) {
+          firstEnglishCharacter = char;
+          break; 
+        }
+      }
+    const result = firstEnglishCharacter || '$';
+    await axios.post('http://localhost:3000/api/generateImage', {
+      name: result.toUpperCase(),
+      uid: auth.currentUser.uid,
+      backgroundColor: 'black',
+      fontColor: 'white'
+    });
+  }catch(error){
+    throw error;
+  }
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
@@ -47,7 +61,18 @@ async function doChangePassword(email, oldPassword, newPassword) {
 
 async function doSignInWithEmailAndPassword(email, password) {
   let auth = getAuth();
-  const result = await signInWithEmailAndPassword(auth, email, password);
+  try{
+    let filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!filter.test(email) || email.length > 35) {
+            throw 'Please provide a valid email address';
+        }
+    if (!(password.length >= 6 && !/\s/.test(password) && password.length<=35)) {
+      throw 'invalid password';
+    }
+    const result = await signInWithEmailAndPassword(auth, email, password);
+  }catch(error){
+    throw error
+  }
 }
 
 async function doSocialSignIn() {
