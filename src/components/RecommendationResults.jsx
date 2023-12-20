@@ -323,11 +323,11 @@ function RecommendationResults() {
                     <Form.Control type="range" min="0" max="1" step="0.01" name="target_valence" onChange={handleChange} />
                 </Form.Group>
 
-                <Form.Group controlId="formTempo">
+                <Form.Group>
                     <Form.Label>Tempo (BPM) (0 to 1000)</Form.Label>
                     <InputGroup>
-                        <FormControl type="number" placeholder="Min Tempo" name="min_tempo" onChange={handleChange} />
-                        <FormControl type="number" placeholder="Max Tempo" name="max_tempo" onChange={handleChange} />
+                        <FormControl type="number" placeholder="Min Tempo" name="min_tempo" id="formMinTempo" onChange={handleChange} />
+                        <FormControl type="number" placeholder="Max Tempo" name="max_tempo" id="formMaxTempo" onChange={handleChange} />
                     </InputGroup>
                 </Form.Group>
 
@@ -341,19 +341,19 @@ function RecommendationResults() {
                     <Form.Control type="range" min="0" max="1" step="0.01" name="target_liveness" onChange={handleChange} />
                 </Form.Group>
 
-                <Form.Group controlId="formLoudness">
+                <Form.Group >
                     <Form.Label>Loudness (dB) (-60 to 0)</Form.Label>
                     <InputGroup>
-                        <FormControl type="number" placeholder="Min Loudness" name="min_loudness" onChange={handleChange} />
-                        <FormControl type="number" placeholder="Max Loudness" name="max_loudness" onChange={handleChange} />
+                        <FormControl type="number" placeholder="Min Loudness" name="min_loudness" id="formMinLoudness" onChange={handleChange} />
+                        <FormControl type="number" placeholder="Max Loudness" name="max_loudness" id="formMaxLoudness" onChange={handleChange} />
                     </InputGroup>
                 </Form.Group>
 
-                <Form.Group controlId="formPopularity">
+                <Form.Group >
                     <Form.Label>Popularity (0 to 100)</Form.Label>
                     <InputGroup>
-                        <FormControl type="number" placeholder="Min Popularity" name="min_popularity" onChange={handleChange} min="0" max="100" />
-                        <FormControl type="number" placeholder="Max Popularity" name="max_popularity" onChange={handleChange} min="0" max="100" />
+                        <FormControl type="number" placeholder="Min Popularity" name="min_popularity" id="formMinPopularity" onChange={handleChange} min="0" max="100" />
+                        <FormControl type="number" placeholder="Max Popularity" name="max_popularity" id="formMaxPopularity" onChange={handleChange} min="0" max="100" />
                     </InputGroup>
                 </Form.Group>
 
