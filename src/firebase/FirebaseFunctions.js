@@ -24,8 +24,8 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
     if (!(password.length >= 6 && !/\s/.test(password))) {
       throw 'invalid password';
     }
-    if (!(/^[a-zA-Z]+$/.test(displayName) && displayName.length <= 10)) {
-      throw 'invalid disPlayName should be Under 10 and at least one letter with no space';
+    if (!/^[^\s]*[a-zA-Z][^\s]{0,9}$/.test(displayName)) {
+      throw 'Invalid displayName. Should start with a letter, be at most 10 characters long, and contain no spaces.';
     }
     await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, {displayName: displayName});
@@ -51,12 +51,22 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
 }
 
 async function doChangePassword(email, oldPassword, newPassword) {
-  const auth = getAuth();
-  let credential = EmailAuthProvider.credential(email, oldPassword);
-  console.log(credential);
-  await reauthenticateWithCredential(auth.currentUser, credential);
-  await updatePassword(auth.currentUser, newPassword);
-  await doSignOut();
+  try{
+    const auth = getAuth();
+    if (!(oldPassword.length >= 6 && !/\s/.test(oldPassword) && oldPassword.length<=35)) {
+      throw 'invalid password';
+    }
+    if (!(newPassword.length >= 6 && !/\s/.test(newPassword) && newPassword.length<=35)) {
+      throw 'invalid password';
+    }
+    let credential = EmailAuthProvider.credential(email, oldPassword);
+    console.log(credential);
+    await reauthenticateWithCredential(auth.currentUser, credential);
+    await updatePassword(auth.currentUser, newPassword);
+    await doSignOut();
+  }catch(error){
+    throw error
+  }
 }
 
 async function doSignInWithEmailAndPassword(email, password) {
