@@ -42,7 +42,7 @@ const NavigationAuth = () => {
         </li>
         <br/><br/>
         <li>
-          <NavLink to='/mySongs'>mySongs</NavLink>
+          <NavLink to='/MySongs'>MySongs</NavLink>
         </li>
         <br/><br/>
         <li>
