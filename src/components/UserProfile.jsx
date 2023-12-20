@@ -178,7 +178,7 @@ function UserProfile() {
               value={newUsername}
               onChange={(e) => {
                 const inputUsername = e.target.value;
-                if (inputUsername.length <= 10) {
+                if (inputUsername.length <= 10 && !inputUsername.includes(" ")) {
                   setNewUsername(inputUsername);
                 }
               }}
