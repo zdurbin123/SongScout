@@ -9,6 +9,14 @@ function SignUp() {
   const handleSignUp = async (e) => {
     e.preventDefault();
     const {displayName, email, passwordOne, passwordTwo} = e.target.elements;
+    if(displayName.value.length > 35){
+      setPwMatch('Display name must not be greater than 35 characters');
+      return false;
+    }
+    if(email.value.length > 35){
+      setPwMatch('Display name must not be greater than 35 characters');
+      return false;
+    }
     if (passwordOne.value !== passwordTwo.value) {
       setPwMatch('Passwords do not match');
       return false;
