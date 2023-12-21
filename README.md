@@ -36,7 +36,9 @@ Execute the command `npm start` in the terminal. This will start the express bac
 ### Running the Application (AWS Amplify or Run Vite Locally)
 You can run the application using AWS amplify, or using Vite locally
 
-### AWS Amplify Hosting:
+### AWS Amplify Hosting
 The frontend of our application is hosted in the AWS Amplify. You can access the live application at the following URL: https://main.d21q7yklqsarm.amplifyapp.com/
-### Running Locally:
+### Running Locally
 Alternatively, Our react application can also run locallly using Vite by using the commmand `npm run dev`. 
+### Handling Spotify API Limit Exceedance
+If you reach the API call limit,(HTTP 429 Too Many Requests response status code) switch the `client_id` and `client_secret` in app.js. To do this one needs to just uncomment the commented code and comment the current credentials to use another app in the spotify api for developers thereby creating a different token.
