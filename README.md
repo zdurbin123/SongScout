@@ -17,7 +17,11 @@ Use this link to clone the Github Repo https://github.com/zdurbin123/SongScout.g
 Use the following command to install ImageMagick:(Mac/Windows)
 - `brew update && brew install imagemagick`
 - You can also install ImageMagick from the website https://imagemagick.org/
-Use the following command to install redis:(Mac/Windows) 
+Use the following command to install redis for Mac:
+-brew install redis
+Follow these instructions to install redis for Windows:
+- https://redis.io/docs/install/install-redis/install-redis-on-windows/
+
 ### Start the Redis Server (required)
 Run the Redis Server in the terminal locally using the commands: 
 1. `redis-server`
