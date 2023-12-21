@@ -24,11 +24,17 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
         if (!filter.test(email)) {
             throw 'Please provide a valid email address';
         }
-    if (!(password.length >= 6 && !/\s/.test(password))) {
+        if (email.length >= 20){
+          throw 'Please provide a valid email address';
+        }
+    if (!(password.length >= 6 && !/\s/.test(password)) && password.length <= 20 ) {
       throw 'invalid password';
     }
     if (!/^[^\s]*[a-zA-Z][^\s]{0,9}$/.test(displayName)) {
       throw 'Invalid displayName. Should start with a letter, be at most 10 characters long, and contain no spaces.';
+    }
+    if (displayName.length>=10){
+      throw 'Invalid displayName. Should start with a letter, be at most 10 characters long, and contain no spaces'
     }
     await createUserWithEmailAndPassword(auth, email, password);
     await updateProfile(auth.currentUser, {displayName: displayName});
@@ -133,6 +139,9 @@ async function doSocialSignIn() {
 
 async function doPasswordReset(email) {
   if (email.trim().length===0){
+    throw new Error('invalid email');
+  }
+  if(email.length>=35){
     throw new Error('invalid email');
   }
   let auth = getAuth();
