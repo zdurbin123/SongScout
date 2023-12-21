@@ -1,5 +1,5 @@
 # SongScout
-CS554 Final Project
+CS554 Final Project- The Webducks
 
 ## Overview
 SongScout is a website that allows the user to get extremely customizable song recommendations. Using special parameters, users can find songs with many parameters not usually seen on the original Spotify website. Special parameters include audio features only found on the Spotify API, such as liveness, danceability, and tempo. Users can also like and dislike songs, and the songs most liked by all users of ScoutScout are displayed on the trending page. Users can view all of their liked and disliked songs on their account page. In addition, there is a tracks page and an artists page, where users can search for songs and artists based on their title. The goal of our application is for users to find new songs based on whatever criteria they desire. 
