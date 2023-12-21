@@ -21,6 +21,9 @@ import {
   const storage = getStorage();
   async function getUserProfileById(Uid) {
     try {
+      if (Uid.trim().length===0){
+        throw 'invalid uid'
+      }
       const userDocRef = doc(db, "users", Uid);
       const userSnapshot = await getDoc(userDocRef);
       if (userSnapshot.exists()) {
@@ -41,6 +44,9 @@ import {
   async function createUserProfile(username, email, uid) {
     const auth = getAuth();
     try {
+      if (username.trim().length===0||email.trim().length===0||uid.trim().length===0){
+        throw 'invalid username,email,uid'
+      }
       const usersCollection = collection(db, "users");
       const userQuery = query(usersCollection, where("uid", "==", uid));
       const userSnapshot = await getDocs(userQuery);
@@ -75,6 +81,9 @@ import {
     const auth = getAuth();
 
     try {
+      if (username.trim().length===0||email.trim().length===0||uid.trim().length===0){
+        throw 'invalid username,email,uid'
+      }
       const userProfile = {
         username: username,
         email: email,
@@ -96,6 +105,9 @@ import {
 
   const getFileUrlByName = async (fileName) => {
     try {
+      if (fileName.trim().length===0){
+        throw 'invalid fileName'
+      }
       const files = await listAll(ref(storage, 'images'));
   
       const targetFile = files.items.find((file) => file.name === fileName);

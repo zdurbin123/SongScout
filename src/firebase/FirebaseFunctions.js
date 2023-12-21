@@ -17,6 +17,9 @@ import {createUserProfile,getUserProfileById} from '../../data/userprofile';
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   const auth = getAuth();
   try{
+    if (displayName.trim().length===0||email.trim().length===0||password.trim().length===0){
+      throw 'invalid username,email,uid'
+    }
     let filter = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
         if (!filter.test(email)) {
             throw 'Please provide a valid email address';
@@ -128,6 +131,9 @@ async function doSocialSignIn() {
 }
 
 async function doPasswordReset(email) {
+  if (email.trim().length===0){
+    throw new Error('invalid email');
+  }
   let auth = getAuth();
   await sendPasswordResetEmail(auth, email);
 }

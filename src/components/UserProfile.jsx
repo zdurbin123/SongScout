@@ -36,7 +36,6 @@ function UserProfile() {
             await axios.post(`http://localhost:3000/api/setCachedProfile/${currentUser.uid}`, userProfileData);
           }
           setBannerImagePath(path);
-          console.log(path)
           setuserImagePath(userImagePath);
           setUserProfile(userProfileData);
           if (userProfileData && userProfileData.backgroundColor) {
