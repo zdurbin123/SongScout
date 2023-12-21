@@ -115,7 +115,7 @@ function UserProfile() {
         const updatedProfile = await getUserProfileById(currentUser.uid);
         await axios.post(`http://localhost:3000/api/setCachedProfile/${currentUser.uid}`, updatedProfile);
         setUserProfile(updatedProfile);
-        window.location.href("/account")
+        window.location.href = '/account'
         console.log('User profile and image updated successfully!');
       } catch (error) {
         console.error('Error updating user profile:', error);
