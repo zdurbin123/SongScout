@@ -72,7 +72,7 @@ function Artists() {
           aria-describedby="inputGroup-sizing-sm"
           placeholder="Search Artists"
           type="text"
-          onChange={event=>setsearchTerm(event.target.value)}
+          onChange={event=>setsearchTerm(event.target.value.trim())}
           onKeyDown={handleKeyPress}
     />
     

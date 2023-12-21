@@ -121,7 +121,7 @@ const handleDislikeSong = async (track) => {
           aria-describedby="inputGroup-sizing-sm"
           placeholder="Search Tracks"
           type="text"
-          onChange={event=>setsearchTerm(event.target.value)}
+          onChange={event=>setsearchTerm(event.target.value.trim())}
           onKeyDown={handleKeyPress}
     />
     
