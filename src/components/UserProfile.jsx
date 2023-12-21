@@ -6,9 +6,11 @@ import '../App.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert, Form, Card, Button } from 'react-bootstrap';
+import { useNavigate } from 'react-router-dom';
 //jey test
 
 function UserProfile() {
+  const navigateTo = useNavigate();
   const { currentUser } = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState(null);
   const [newUsername, setNewUsername] = useState('');
@@ -112,7 +114,7 @@ function UserProfile() {
         const updatedProfile = await getUserProfileById(currentUser.uid);
         await axios.post(`http://localhost:3000/api/setCachedProfile/${currentUser.uid}`, updatedProfile);
         setUserProfile(updatedProfile);
-        window.location.href = '/account';
+        navigateTo('/home')
         console.log('User profile and image updated successfully!');
       } catch (error) {
         console.error('Error updating user profile:', error);
