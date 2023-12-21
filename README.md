@@ -13,8 +13,8 @@ SongScout is a website that allows the user to get extremely customizable song r
 ## Setup and Running Application
 ### Clone the Repo/ Download the zip file from Canvas (Required)
 Use this link to clone the Github Repo https://github.com/zdurbin123/SongScout.git
-### Install ImageMagick and Redis locally on the computer (required)
-#### Use the following protocol/command to install ImageMagick:(Mac/Windows)
+### Install ImageMagick and Redis locally on the computer (Required)
+#### Use the following protocol/command to install ImageMagick (Mac/Windows)
 - Installation on MacOs:
   1. `brew update && brew install imagemagick`
 - Installation on Windows:
@@ -24,13 +24,13 @@ Use this link to clone the Github Repo https://github.com/zdurbin123/SongScout.g
   4. Make sure the version is ImageMagick-7.1.1-23 (you can use the command `magick -version` on powershell)
   5. Restart the express server and application if it was already running
      
-#### Install Redis locally:(Mac/Windows)
+#### Install Redis locally (Mac/Windows)
 - To install Redis, go to the website: https://redis.io/docs/install/install-redis/
-### Start the Redis Server (required)
+### Start the Redis Server (Required)
 Run the Redis Server in the terminal locally using the commands: 
 1. `redis-server`
 2. `redis-cli`
-### Run The Express Server Locally (required):
+### Run The Express Server Locally (Required)
 Execute the command `npm start` in the terminal. This will start the express backend server for the SongScout application. ImageMagick is hosted locally to manipulate images, which are then stored on the cloud with Firebase Storage. Additionally we use Firestore Database to handle user and likes collection
 
 ### Running the Application (AWS Amplify or Run Vite Locally)
@@ -42,5 +42,5 @@ The frontend of our application is hosted in the AWS Amplify. You can access the
 Alternatively, Our react application can also run locallly using Vite by using the commmand `npm run dev`. 
 ### Handling Spotify API Limit Exceedance
 If you reach the API call limit,(HTTP 429 Too Many Requests response status code) switch the `client_id` and `client_secret` in app.js. To do this one needs to just uncomment the commented code and comment the current credentials to use another app in the spotify api for developers thereby creating a different token.
-### FireBase 
+### FireBase Authentication,Storage and Firestore Database
 You can also checkout our Firebase using this url https://console.firebase.google.com/u/0/project/songscout-1ce29/overview (login using stevens credentials).
