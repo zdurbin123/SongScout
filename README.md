@@ -15,13 +15,17 @@ SongScout is a website that allows the user to get extremely customizable song r
 Use this link to clone the Github Repo https://github.com/zdurbin123/SongScout.git
 ### Install ImageMagick and Redis locally on the computer (required)
 Use the following command to install ImageMagick:(Mac/Windows)
-- `brew update && brew install imagemagick`
-- You can also install ImageMagick from the website https://imagemagick.org/
-Use the following command to install redis for Mac:
--brew install redis
-Follow these instructions to install redis for Windows:
-- https://redis.io/docs/install/install-redis/install-redis-on-windows/
-
+- Installing on MacOs:
+  1. `brew update && brew install imagemagick`
+- You can also install ImageMagick from the
+  1. Go to the ImageMagick website [https://imagemagick.org/](https://imagemagick.org/script/download.php)
+  2. Download the ImageMagick binary release version: ImageMagick-7.1.1-23-Q16-HDRI-x64-dll.exe
+  3. Run the executable and follow the installation instructions
+  4. Make sure the version is ImageMagick-7.1.1-23 (you can use the command `magick -version` on powershell
+  5. Restart the express server and application if it was already running
+     
+Install Redis locally:(Mac/Windows)
+- To install Redis, go to the website: https://redis.io/docs/install/install-redis/
 ### Start the Redis Server (required)
 Run the Redis Server in the terminal locally using the commands: 
 1. `redis-server`
