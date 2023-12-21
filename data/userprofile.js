@@ -57,7 +57,7 @@ import {
         likedsongs: [],
         photoURL:"../../images/"+uid+".jpg",
         backgroundColor:'black',
-        fontColor:'white',
+        fontColor:'#ffffff',
         profileBanner:''
       });
       await updateProfile(auth.currentUser, {
