@@ -87,8 +87,7 @@ import {
       await updateProfile(auth.currentUser, {
           displayName: username
       });
-
-      console.log('User profile updated successfully!');
+      console.log('Save and Refresh Successfully');
     } catch (error) {
       console.error('Error updating user profile:', error);
       throw error;
