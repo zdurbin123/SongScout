@@ -42,3 +42,5 @@ The frontend of our application is hosted in the AWS Amplify. You can access the
 Alternatively, Our react application can also run locallly using Vite by using the commmand `npm run dev`. 
 ### Handling Spotify API Limit Exceedance
 If you reach the API call limit,(HTTP 429 Too Many Requests response status code) switch the `client_id` and `client_secret` in app.js. To do this one needs to just uncomment the commented code and comment the current credentials to use another app in the spotify api for developers thereby creating a different token.
+### FireBase 
+You can also checkout our Firebase using this url https://console.firebase.google.com/u/0/project/songscout-1ce29/overview and login using using stevens credentials.
