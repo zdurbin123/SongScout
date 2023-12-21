@@ -13,7 +13,7 @@ function UserProfile() {
   const [userProfile, setUserProfile] = useState(null);
   const [newUsername, setNewUsername] = useState('');
   const [backgroundColor, setBackgroundColor] = useState('black');
-  const [fontColor, setFontColor] = useState('white');
+  const [fontColor, setFontColor] = useState('ffffff');
   const [bannerImage, setBannerImage] = useState(null);
   const [imageExists, setImageExists] = useState(true);
   const [userImagePath, setuserImagePath] = useState('');

@@ -8,9 +8,11 @@ export const AuthProvider = ({children}) => {
   const auth = getAuth();
   useEffect(() => {
     let myListener = onAuthStateChanged(auth, (user) => {
-      setCurrentUser(user);
-      console.log('onAuthStateChanged', user);
-      setLoadingUser(false);
+      setTimeout(() => {
+        setCurrentUser(user);
+        console.log('onAuthStateChanged', user);
+        setLoadingUser(false);
+      }, 1000); // Delay for one second (1000 milliseconds)
     });
     return () => {
       if (myListener) myListener();
