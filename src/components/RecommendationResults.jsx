@@ -13,22 +13,7 @@ function RecommendationResults() {
     const [recommendations, setRecommendations] = useState([]);
     const [hasFetched, setHasFetched] = useState(false);
     const [error, setError] = useState(null);
-    const [genres, setGenres] = useState(null);
-    const [market, setMarket] = useState(null);
-    const [minLoudness, setMinLoudness] = useState(null);
-    const [maxLoudness, setMaxLoudness] = useState(null);
-    const [minPopularity, setMinPopularity] = useState(null);
-    const [maxPopularity, setMaxPopularity] = useState(null);
-    const [minTempo, setMinTempo] = useState(null);
-    const [maxTempo, setMaxTempo] = useState(null);
-    const [limit, setLimit] = useState(20);
-    const [artists, setArtists] = useState(null);
-    const [songs, setSongs] = useState(null);
-    const [searchParams, setSearchParams] = useState({
-        limit: 20, 
-        seed_genres: '',
-        
-    });
+    
     const { currentUser } = useContext(AuthContext);
     const { likedSongs, dislikedSongs, handleLike, handleDislike } = useContext(LikesContext);
 
@@ -59,25 +44,41 @@ function RecommendationResults() {
     }, []);
 
 
-        
-
-
-   
-
-
     const fetchRecommendations = async () => {
       setError(null);
 
       let isValid = true;
 
-            //some of these are to prevent people from messing with the source code and getting extra values
           if(acousticnessRef.current.value){
             if(validation.checkAcousticness(acousticnessRef.current.value)){
               alert(validation.checkAcousticness(acousticnessRef.current.value));
               isValid = false;
             }
           }  
-  
+          if(danceabilityRef.current.value){
+            if(validation.checkDancability(danceabilityRef.current.value)){
+              alert(validation.checkDancability(danceabilityRef.current.value));
+              isValid = false;
+            }
+          }  
+          if(valenceRef.current.value){
+            if(validation.checkValence(valenceRef.current.value)){
+              alert(validation.checkValence(valenceRef.current.value));
+              isValid = false;
+            }
+          }  
+          if(speechinessRef.current.value){
+            if(validation.checkSpeechiness(speechinessRef.current.value)){
+              alert(validation.checkSpeechiness(speechinessRef.current.value));
+              isValid = false;
+            }
+          }  
+          if(livenessRef.current.value){
+            if(validation.checkLiveliness(livenessRef.current.value)){
+              alert(validation.checkLiveliness(livenessRef.current.value));
+              isValid = false;
+            }
+          }  
   
           if(minLoudnessRef.current.value){
             if(validation.checkLoudness(minLoudnessRef.current.value)){
@@ -117,10 +118,6 @@ function RecommendationResults() {
               isValid = false;
             } 
           }
-
-
-
-
 
 
         if(validation.checkGenres(genresRef.current.value)){
@@ -176,13 +173,13 @@ function RecommendationResults() {
       }
      console.log(isValid)
       if (isValid){
-
+        
         const searchParams = new URLSearchParams();
         if (limitRef.current.value) searchParams.append('limit', limitRef.current.value);
-        if (marketRef.current.value) searchParams.append('market', marketRef.current.value);
-        if (genresRef.current.value) searchParams.append('seed_genres', genresRef.current.value);
-        if (artistsRef.current.value) searchParams.append('seed_artists', artistsRef.current.value);
-        if (tracksRef.current.value) searchParams.append('seed_tracks', tracksRef.current.value);
+        if (marketRef.current.value) searchParams.append('market', marketRef.current.value.trim().toUpperCase());
+        if (genresRef.current.value) searchParams.append('seed_genres', genresRef.current.value.toLowerCase());
+        if (artistsRef.current.value) searchParams.append('seed_artists', artistsRef.current.value.trim());
+        if (tracksRef.current.value) searchParams.append('seed_tracks', tracksRef.current.value.trim());
         if (danceabilityRef.current.value) searchParams.append('target_danceability', danceabilityRef.current.value);
         if (acousticnessRef.current.value) searchParams.append('target_acousticness', acousticnessRef.current.value);
         if (valenceRef.current.value) searchParams.append('target_valence', valenceRef.current.value);
