@@ -192,7 +192,7 @@ function UserProfile() {
             className="btn btn-primary"
             onClick={handleUpdateProfile}
           >
-            Update Profile and Image
+            Save | Refresh
           </button>
         </div>
       </div>
