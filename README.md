@@ -10,7 +10,7 @@ SongScout is a website that allows the user to get extremely customizable song r
 -  Athena Kiriakoulis
 -  Zak Durbin
 
-## Setup and Running
+## Setup and Running Application
 ### Clone the Repo (Required)
 Use this link to clone the Github Repo https://github.com/zdurbin123/SongScout.git
 ### Install ImageMagick and Redis locally on the computer (required)
