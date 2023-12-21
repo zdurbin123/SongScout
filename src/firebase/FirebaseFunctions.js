@@ -24,7 +24,7 @@ async function doCreateUserWithEmailAndPassword(email, password, displayName) {
         if (!filter.test(email)) {
             throw 'Please provide a valid email address';
         }
-        if (email.length >= 20){
+        if (email.length >= 35){
           throw 'Please provide a valid email address';
         }
     if (!(password.length >= 6 && !/\s/.test(password)) && password.length <= 20 ) {
