@@ -39,4 +39,4 @@ You can run the application using AWS amplify, or using Vite locally
 ### AWS Amplify Hosting:
 The frontend of our application is hosted in the AWS Amplify. You can access the live application at the following URL: https://main.d21q7yklqsarm.amplifyapp.com/
 ### Running Locally:
-Alternatively, Our react application can also run locallly using Vite by using the commmand npm run dev. 
+Alternatively, Our react application can also run locallly using Vite by using the commmand `npm run dev`. 
