@@ -6,11 +6,11 @@ import '../App.css';
 import { Link } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Alert, Form, Card, Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 //jey test
 
 function UserProfile() {
-  const navigateTo = useNavigate();
+  const [haschanged,setHasChanged] = useState(false)
   const { currentUser } = useContext(AuthContext);
   const [userProfile, setUserProfile] = useState(null);
   const [newUsername, setNewUsername] = useState('');
@@ -114,7 +114,7 @@ function UserProfile() {
         const updatedProfile = await getUserProfileById(currentUser.uid);
         await axios.post(`http://localhost:3000/api/setCachedProfile/${currentUser.uid}`, updatedProfile);
         setUserProfile(updatedProfile);
-        navigateTo('/home')
+        setHasChanged(true);
         console.log('User profile and image updated successfully!');
       } catch (error) {
         console.error('Error updating user profile:', error);
@@ -124,6 +124,10 @@ function UserProfile() {
     const handleImageError = () => {
       setImageExists(false);
     };
+
+    if (haschanged) {
+      return <Navigate to='/home' />;
+    } 
 
     return (
     <div className="container mt-4">

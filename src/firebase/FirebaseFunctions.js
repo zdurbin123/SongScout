@@ -12,7 +12,7 @@ import {
   reauthenticateWithCredential
 } from 'firebase/auth';
 import axios from 'axios';
-import {createUserProfile,getUserProfileById} from '../../data/userprofile';
+import {createUserProfile,getUserProfileById,updateUserProfile} from '../../data/userprofile';
 
 async function doCreateUserWithEmailAndPassword(email, password, displayName) {
   const auth = getAuth();
@@ -100,6 +100,7 @@ async function doSocialSignIn() {
 
     try {
       const existingUserProfile = await getUserProfileById(uid);
+      await updateProfile(auth.currentUser, {displayName: existingUserProfile.username});
       console.log("Existing User Profile:", existingUserProfile);
     } catch (getUserProfileError) {
       if (getUserProfileError === 'User not found') {
