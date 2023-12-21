@@ -5,6 +5,7 @@ import {Button,Card,Row,Col,Container,InputGroup,FormControl, CardImg, CardBody}
 import { getDislikedSongs } from '../../data/music';
 import { getAuth } from 'firebase/auth';
 import { Link } from 'react-router-dom';
+import noImage from '../img/download.jpeg';
 
 function DislikedSongs() {
   const [DislikedSongs, setDislikedSongs] = useState([]);
@@ -35,7 +36,7 @@ function DislikedSongs() {
             
             <Card  className="h-100 w-100" style={{ width: '18rem' }}>
             <Link to={`/Song/${song.song_id}`} style={{ textDecoration: 'none', color: 'inherit' }}>
-              {song.image_url && <Card.Img variant="top" src={song.image_url} alt={song.name} />}
+              {song.image_url && <Card.Img variant="top" src={song.image_url || noImage} alt={`${song.name}`} />}
               <Card.Body>
                 <Card.Title className="display-4">{song.name}</Card.Title>
                 <Card.Text className="lead">

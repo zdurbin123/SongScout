@@ -6,6 +6,7 @@ import { likeSong, dislikeSong,getLikedSongsSortedByLikes } from '../../data/mus
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import noImage from '../img/download.jpeg';
 /*Promise.all Works
 Takes an Iterable of Promises: Promise.all accepts an iterable (like an array) of promises.
 
@@ -146,7 +147,7 @@ if (trendingSongs.length === 0 && !error) {
                   
                       {song.album && song.album.images && song.album.images[0] && (
                         <Card.Img
-                          src={song.album.images[0].url}
+                          src={song.album.images[0]?.url|| noImage}
                           alt={`${song.name}`}
                           className="img-fluid"
                           style={{ minHeight: '300px', objectFit: 'cover' }}

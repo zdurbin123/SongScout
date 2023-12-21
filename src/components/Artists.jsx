@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button,Card,Row,Col,Container,InputGroup,FormControl,Alert } from 'react-bootstrap';
-
+import noImage from '../img/download.jpeg';
 
 function Artists() {
     const[searchTerm,setsearchTerm]=useState('');
@@ -63,7 +63,7 @@ function Artists() {
     }
   };
     return (
-    <div>
+    <div id="inputGroup-sizing-sm">
         <Container>
             <InputGroup size="lg" className="mb-3">  
         
@@ -71,7 +71,7 @@ function Artists() {
           aria-label="Large"
           aria-describedby="inputGroup-sizing-sm"
           placeholder="Search Artists"
-          type="input"
+          type="text"
           onChange={event=>setsearchTerm(event.target.value)}
           onKeyDown={handleKeyPress}
     />
@@ -88,7 +88,7 @@ function Artists() {
          {artists.map((artist, index) => (
                       <Col key={index} md={6} lg={3}>
                         <Card key={index}  style={{ width: '18rem' }} className="h-100 w-100">
-                        <Card.Img variant="top" src={artist.images[0]?.url} alt={`${artist.name}`} />
+                        <Card.Img variant="top" src={artist.images[0]?.url || noImage} alt={`${artist.name}`} />
                         <Card.Body>
                             <Card.Title>{artist.name}</Card.Title>
                             <Card.Text>

@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import {Button,Card,Row,Col,Container,InputGroup,FormControl} from 'react-bootstrap';
-
+import noImage from '../img/download.jpeg';
 
 function Songs() {
     const[searchTerm,setsearchTerm]=useState('');
@@ -78,7 +78,7 @@ function Songs() {
          {songs.map((song, index) => (
                       <Col key={index} md={6} lg={3}>
                         <Card key={index}  style={{ width: '18rem' }} className="h-100 w-100">
-                        <Card.Img variant="top" src={song.album.images[0]?.url} alt={`${song.name}`} />
+                        <Card.Img variant="top" src={song.album.images[0]?.url|| noImage} alt={`${song.name}`} />
                         <Card.Body>
                             <Card.Title>{song.name}</Card.Title>
                             <Card.Text>
