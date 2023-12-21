@@ -151,7 +151,7 @@ function UserProfile() {
               Select Background Color Visually:
               <input
                 type="color"
-                value={backgroundColor}
+                value={backgroundColor === 'black' ? '#000000' : backgroundColor}
                 onChange={(e) => setBackgroundColor(e.target.value)}
               />
             </label>
@@ -161,7 +161,7 @@ function UserProfile() {
               Select Font Color Visually:
               <input
                 type="color"
-                value={fontColor}
+                value={fontColor === 'white' ? '#FFFFFF' : fontColor}
                 onChange={(e) => setFontColor(e.target.value)}
               />
             </label>

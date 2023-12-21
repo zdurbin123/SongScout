@@ -7,6 +7,7 @@ import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
 import { getAuth } from 'firebase/auth';
 import { Link } from 'react-router-dom';
+import noImage from '../img/download.jpeg';
 
 function MySongs() {
     const [token, setToken] = useState('');
@@ -118,7 +119,7 @@ function MySongs() {
                           
                         <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
                         <Link to={`/Song/${track.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
-                            <Card.Img variant="top" src={track.album.images[0]?.url} />
+                            <Card.Img variant="top" src={track.album.images[0]?.url|| noImage} alt={`${track.name}`}/>
                             <Card.Body>
                                 <Card.Title>{track.name}</Card.Title>
                                 <Card.Text>

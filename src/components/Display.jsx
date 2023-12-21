@@ -6,6 +6,7 @@ import { likeSong, dislikeSong } from '../../data/music';
 import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
+import noImage from '../img/download.jpeg';
 
 function Display() {
     const [searchTerm, setsearchTerm] = useState('');
@@ -111,7 +112,7 @@ const handleDislikeSong = async (track) => {
 
 
     return (
-    <div>
+    <div id="inputGroup-sizing-sm">
         <Container>
             <InputGroup size="lg" className="mb-3">  
         
@@ -119,7 +120,7 @@ const handleDislikeSong = async (track) => {
           aria-label="Large"
           aria-describedby="inputGroup-sizing-sm"
           placeholder="Search Tracks"
-          type="input"
+          type="text"
           onChange={event=>setsearchTerm(event.target.value)}
           onKeyDown={handleKeyPress}
     />
@@ -135,7 +136,7 @@ const handleDislikeSong = async (track) => {
                           
                         <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
                         <Link to={`/Song/${track.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
-                            <Card.Img variant="top" src={track.album.images[0]?.url} />
+                            <Card.Img variant="top" src={track.album.images[0]?.url || noImage} alt={`${track.name}`} />
                             <Card.Body>
                                 <Card.Title>{track.name}</Card.Title>
                                 <Card.Text>
