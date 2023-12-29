@@ -141,9 +141,15 @@ function checkPopularity (value){
 }
 
 function checkTempo(value){
-
-    if(value < 0 || value > 1000) return "Tempo must be between 0 and 1000";
-    else{return false;}
+    if (value == Math.floor(value)) {
+        if (value < 0 || value > 1000) {
+            return "Tempo must be between 0 and 1000";
+        } else {
+            return false;
+        }
+    } else {
+        return "Tempo must be an integer";
+    }
  }
 
 function checkLoudness (value){

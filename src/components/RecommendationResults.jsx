@@ -7,6 +7,7 @@ import { LikesContext } from '../context/LikesContext';
 import { AuthContext } from '../context/AuthContext';
 import { Link } from 'react-router-dom';
 import * as validation from '../../data/validation'
+import noImage from '../img/download.jpeg';
 
 function RecommendationResults() {
     const [token, setToken] = useState('');
@@ -173,13 +174,22 @@ function RecommendationResults() {
       }
      console.log(isValid)
       if (isValid){
-        
+        let artists=artistsRef.current.value.trim().split(",")
+        let newart=""
+        for(let i of artists){
+          newart+=`${i.trim()},`
+        }
+        let tracks=tracksRef.current.value.trim().split(",")
+        let newtra=""
+        for(let i of tracks){
+          newtra+=`${i.trim()},`
+        }
         const searchParams = new URLSearchParams();
         if (limitRef.current.value) searchParams.append('limit', limitRef.current.value);
         if (marketRef.current.value) searchParams.append('market', marketRef.current.value.trim().toUpperCase());
         if (genresRef.current.value) searchParams.append('seed_genres', genresRef.current.value.toLowerCase());
-        if (artistsRef.current.value) searchParams.append('seed_artists', artistsRef.current.value.trim());
-        if (tracksRef.current.value) searchParams.append('seed_tracks', tracksRef.current.value.trim());
+        if (artistsRef.current.value) searchParams.append('seed_artists', newart);
+        if (tracksRef.current.value) searchParams.append('seed_tracks', newtra);
         if (danceabilityRef.current.value) searchParams.append('target_danceability', danceabilityRef.current.value);
         if (acousticnessRef.current.value) searchParams.append('target_acousticness', acousticnessRef.current.value);
         if (valenceRef.current.value) searchParams.append('target_valence', valenceRef.current.value);
@@ -402,7 +412,7 @@ function RecommendationResults() {
                           
                         <Card key={index} className="h-100 w-100" style={{ width: '18rem' }}>
                         <Link to={`/Song/${track.id}`} style={{ textDecoration: 'none', color: 'inherit' }} key={index} >
-                            <Card.Img variant="top" src={track.album.images[0]?.url} />
+                            <Card.Img variant="top" src={track.album.images[0]?.url || noImage} alt={`${track.name}`} />
                             <Card.Body>
                                 <Card.Title>{track.name}</Card.Title>
                                 <Card.Text>
